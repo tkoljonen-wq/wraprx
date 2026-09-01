@@ -11,6 +11,7 @@ tarkistaa itsensä ajamalla tuloksen takaisin eteenpäin-mallin läpi.
 molemmat silmät, kaksi tuloskorttia, desentraatio ja laskentajälki). Seuraava on P2:
 prismakäännös.
 
+- **Sovellus:** https://tkoljonen-wq.github.io/wraprx/
 - Suunnitelma: [docs/PLAN.md](docs/PLAN.md)
 - Ohjeet koodaajalle: [CLAUDE.md](CLAUDE.md)
 - Avoimet mallikysymykset: [docs/OPEN-QUESTIONS.md](docs/OPEN-QUESTIONS.md)
