@@ -1,0 +1,15 @@
+{
+  "note": "TÄMÄ TIEDOSTO ON TARKOITUKSELLA TYHJÄ (suunnitelma §9.1 kohta 1). ISO-toleranssilukuja ei saa arvata, täyttää muistista, johtaa 'tyypillisistä' arvoista eikä käyttää toisen standardin taulukkoa toisen paikalla. Luvut kopioidaan standardeista. Tyhjä tai osittainen data on normaali tila: puuttuvan standardin verdikti on 'notAssessed' ja käyttöliittymä näyttää 'ei arvioitu — toleranssidataa ei syötetty'.",
+  "schema": {
+    "standards": "Lista taulukoita. Kumpikin standardi on oma alkio ja kumpikin on valinnainen.",
+    "standards[].standard": "'iso8980-1' (irtolinssi, TILATTAVA voimakkuus) tai 'iso21987' (kehystetyt lasit, KÄYTÖSSÄ TOTEUTUVA). Nämä ovat eri standardit eri kohteille, eivät vaihtoehtoja toisilleen.",
+    "standards[].source": "Standardin tunnus, vuosi, taulukon numero ja sivu. Pakollinen jäljitettävyyden takia.",
+    "standards[].sphere": "Vyöhykkeet: [{ upTo: <vahvimman meridiaanin |voimakkuus| D | null>, tolerance: <D> }]. Viimeisen vyöhykkeen upTo on null.",
+    "standards[].cylinder": "Vyöhykkeet: [{ upTo: <|sylinteri| D | null>, tolerance: <D> }].",
+    "standards[].axis": "Vyöhykkeet: [{ upTo: <|sylinteri| D | null>, tolerance: <astetta> }].",
+    "standards[].prism": "Vyöhykkeet: [{ upTo: <|prisma| pd | null>, tolerance: <pd> }].",
+    "borderlineFraction": "Osuus toleranssista, jonka ylittyessä verdikti on 'rajalla' (esim. 0.9). TÄMÄ ON OHJELMAN OMA ESITYSHEURISTIIKKA, EI STANDARDIN LUKU.",
+    "TARKISTA TÄYTTÄESSÄ": "Vyöhykkeen valintasuure (minkä suureen mukaan rivi valitaan) ja se, mitä komponentteja standardi ylipäätään toleroi, on tarkistettava standardin tekstistä. Jos standardi käyttää päämeridiaanien voimakkuuksia sfäärin ja sylinterin sijaan, skeema on muutettava — älä väännä lukuja väärään muottiin."
+  },
+  "standards": []
+}

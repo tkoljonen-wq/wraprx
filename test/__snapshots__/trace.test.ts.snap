@@ -1,0 +1,831 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`laskentajälki > OD:n jälki vastaa snapshotia 1`] = `
+{
+  "eye": "OD",
+  "schemaVersion": 1,
+  "steps": [
+    {
+      "label": "Resepti refraktion pintavälillä",
+      "name": "rx",
+      "value": {
+        "kind": "matrix",
+        "matrix": {
+          "xx": -0.996201938,
+          "xy": 0.043412044,
+          "yy": -0.503798062,
+        },
+        "power": {
+          "axis": 175,
+          "cylinder": 0.5,
+          "sphere": -1,
+        },
+      },
+    },
+    {
+      "label": "Pintaväli, refraktio",
+      "name": "vertexRefraction",
+      "value": {
+        "kind": "scalar",
+        "unit": "mm",
+        "value": 13.5,
+      },
+    },
+    {
+      "label": "Pintaväli, käyttö",
+      "name": "vertexWorn",
+      "value": {
+        "kind": "scalar",
+        "unit": "mm",
+        "value": 11,
+      },
+    },
+    {
+      "label": "Tavoite käytön pintavälillä",
+      "name": "target",
+      "value": {
+        "kind": "matrix",
+        "matrix": {
+          "xx": -0.993722374,
+          "xy": 0.043249723,
+          "yy": -0.503159641,
+        },
+        "power": {
+          "axis": 175,
+          "cylinder": 0.498130454,
+          "sphere": -0.997506234,
+        },
+      },
+    },
+    {
+      "label": "Wrap per linssi",
+      "name": "wrapPerLens",
+      "value": {
+        "kind": "scalar",
+        "unit": "deg",
+        "value": 15,
+      },
+    },
+    {
+      "label": "Wrap etumerkillisenä (OD negatiivinen)",
+      "name": "beta",
+      "value": {
+        "kind": "scalar",
+        "unit": "deg",
+        "value": -15,
+      },
+    },
+    {
+      "label": "Pantoskooppinen kaltevuus",
+      "name": "panto",
+      "value": {
+        "kind": "scalar",
+        "unit": "deg",
+        "value": 18,
+      },
+    },
+    {
+      "label": "Kokonaiskallistus τ",
+      "name": "tau",
+      "value": {
+        "kind": "scalar",
+        "unit": "deg",
+        "value": 23.270480219,
+      },
+    },
+    {
+      "label": "Tangentiaalimeridiaani μ",
+      "name": "mu",
+      "value": {
+        "kind": "scalar",
+        "unit": "deg",
+        "value": 49.071382386,
+      },
+    },
+    {
+      "label": "Linssitason normaali n̂",
+      "name": "normal",
+      "value": {
+        "kind": "vector3",
+        "value": [
+          -0.258819045,
+          -0.298487496,
+          0.918650051,
+        ],
+      },
+    },
+    {
+      "label": "Base curve -korjaus mukana",
+      "name": "baseCurveApplied",
+      "value": {
+        "kind": "flag",
+        "value": false,
+      },
+    },
+    {
+      "label": "OCR-menetelmä",
+      "name": "ocrMethod",
+      "value": {
+        "kind": "text",
+        "value": "exact",
+      },
+    },
+    {
+      "label": "k_sag",
+      "name": "kSag",
+      "value": {
+        "kind": "scalar",
+        "unit": "ratio",
+        "value": 1.053508159,
+      },
+    },
+    {
+      "label": "k_tan",
+      "name": "kTan",
+      "value": {
+        "kind": "scalar",
+        "unit": "ratio",
+        "value": 1.248353824,
+      },
+    },
+    {
+      "label": "k_risti",
+      "name": "kCross",
+      "value": {
+        "kind": "scalar",
+        "unit": "ratio",
+        "value": 1.146800304,
+      },
+    },
+    {
+      "label": "Tilattava, tarkka",
+      "name": "orderedExact",
+      "value": {
+        "kind": "matrix",
+        "matrix": {
+          "xx": -0.882500576,
+          "xy": 0.092838051,
+          "yy": -0.438959325,
+        },
+        "power": {
+          "axis": 168.642372227,
+          "cylinder": 0.480837245,
+          "sphere": -0.901148573,
+        },
+      },
+    },
+    {
+      "label": "Tilattava, 0,25 D (ruudukkohaku)",
+      "name": "orderedRounded",
+      "value": {
+        "kind": "matrix",
+        "matrix": {
+          "xx": -0.981795964,
+          "xy": 0.093651648,
+          "yy": -0.518204036,
+        },
+        "power": {
+          "axis": 169,
+          "cylinder": 0.5,
+          "sphere": -1,
+        },
+      },
+    },
+    {
+      "label": "Tilattava, 0,25 D (naiivi pyöristys)",
+      "name": "orderedNaive",
+      "value": {
+        "kind": "matrix",
+        "matrix": {
+          "xx": -0.981795964,
+          "xy": 0.093651648,
+          "yy": -0.518204036,
+        },
+        "power": {
+          "axis": 169,
+          "cylinder": 0.5,
+          "sphere": -1,
+        },
+      },
+    },
+    {
+      "label": "Ruudukkohaun etäisyys tavoitteesta",
+      "name": "roundingDistance",
+      "value": {
+        "kind": "scalar",
+        "unit": "D",
+        "value": 0.127045748,
+      },
+    },
+    {
+      "label": "Naiivin etäisyys tavoitteesta",
+      "name": "roundingNaiveDistance",
+      "value": {
+        "kind": "scalar",
+        "unit": "D",
+        "value": 0.127045748,
+      },
+    },
+    {
+      "label": "Ruudukkohaku paransi naiivia",
+      "name": "roundingImproved",
+      "value": {
+        "kind": "flag",
+        "value": false,
+      },
+    },
+    {
+      "label": "Arvioidut ehdokkaat",
+      "name": "roundingCandidates",
+      "value": {
+        "kind": "scalar",
+        "unit": "count",
+        "value": 99,
+      },
+    },
+    {
+      "label": "Toteutuva silmällä, tarkka",
+      "name": "asWornExact",
+      "value": {
+        "kind": "matrix",
+        "matrix": {
+          "xx": -0.993722374,
+          "xy": 0.043249723,
+          "yy": -0.503159641,
+        },
+        "power": {
+          "axis": 175,
+          "cylinder": 0.498130454,
+          "sphere": -0.997506234,
+        },
+      },
+    },
+    {
+      "label": "Toteutuva silmällä, 0,25 D",
+      "name": "asWornRounded",
+      "value": {
+        "kind": "matrix",
+        "matrix": {
+          "xx": -1.106515764,
+          "xy": 0.035582596,
+          "yy": -0.595419977,
+        },
+        "power": {
+          "axis": 176.036539096,
+          "cylinder": 0.516026539,
+          "sphere": -1.10898114,
+        },
+      },
+    },
+    {
+      "label": "Toteutuva silmällä, kompensoimaton resepti",
+      "name": "asWornUncompensated",
+      "value": {
+        "kind": "matrix",
+        "matrix": {
+          "xx": -1.127654988,
+          "xy": -0.022227214,
+          "yy": -0.583573456,
+        },
+        "power": {
+          "axis": 2.335500962,
+          "cylinder": 0.545894596,
+          "sphere": -1.12856152,
+        },
+      },
+    },
+    {
+      "label": "Residuaali, tarkka",
+      "name": "residualExact",
+      "value": {
+        "kind": "scalar",
+        "unit": "D",
+        "value": 0,
+      },
+    },
+    {
+      "label": "Residuaali, 0,25 D",
+      "name": "residualRounded",
+      "value": {
+        "kind": "scalar",
+        "unit": "D",
+        "value": 0.146122853,
+      },
+    },
+    {
+      "label": "Residuaali, kompensoimaton",
+      "name": "residualUncompensated",
+      "value": {
+        "kind": "scalar",
+        "unit": "D",
+        "value": 0.181600621,
+      },
+    },
+    {
+      "label": "Desentraatio, kierretty taso",
+      "name": "decentrationHorizontal",
+      "value": {
+        "kind": "scalar",
+        "unit": "mm",
+        "value": 2.888800317,
+      },
+    },
+    {
+      "label": "Desentraatio, boxing-taso (vertailu)",
+      "name": "decentrationBoxing",
+      "value": {
+        "kind": "scalar",
+        "unit": "mm",
+        "value": 4,
+      },
+    },
+    {
+      "label": "Kompensoitu PD (vertailu)",
+      "name": "compensatedPd",
+      "value": {
+        "kind": "scalar",
+        "unit": "mm",
+        "value": 32.611199683,
+      },
+    },
+    {
+      "label": "OC-korkeus, kierretty taso",
+      "name": "ocHeight",
+      "value": {
+        "kind": "scalar",
+        "unit": "mm",
+        "value": 22.448783731,
+      },
+    },
+    {
+      "label": "OC-korkeus, sovituskorkeus sellaisenaan (vertailu)",
+      "name": "ocHeightBoxing",
+      "value": {
+        "kind": "scalar",
+        "unit": "mm",
+        "value": 22,
+      },
+    },
+    {
+      "label": "OC-korkeus, nyrkkisääntö 1 mm / 2° (vertailu)",
+      "name": "ocHeightVogel",
+      "value": {
+        "kind": "scalar",
+        "unit": "mm",
+        "value": 13,
+      },
+    },
+    {
+      "label": "OC-korkeus, akseli kiertokeskiöön (vaihtoehtoinen kriteeri)",
+      "name": "ocHeightOpticalAxis",
+      "value": {
+        "kind": "scalar",
+        "unit": "mm",
+        "value": 14.877867369,
+      },
+    },
+    {
+      "label": "Katselinjan lävistyspiste, h",
+      "name": "visualPointH",
+      "value": {
+        "kind": "scalar",
+        "unit": "mm",
+        "value": 2.888800317,
+      },
+    },
+    {
+      "label": "Katselinjan lävistyspiste, v",
+      "name": "visualPointV",
+      "value": {
+        "kind": "scalar",
+        "unit": "mm",
+        "value": 4.448783731,
+      },
+    },
+    {
+      "label": "Prentice-prisma boxing-keskiössä",
+      "name": "inducedPrismMagnitude",
+      "value": {
+        "kind": "scalar",
+        "unit": "pd",
+        "value": 0.272066628,
+      },
+    },
+  ],
+}
+`;
+
+exports[`laskentajälki > OS:n jälki vastaa snapshotia 1`] = `
+{
+  "eye": "OS",
+  "schemaVersion": 1,
+  "steps": [
+    {
+      "label": "Resepti refraktion pintavälillä",
+      "name": "rx",
+      "value": {
+        "kind": "matrix",
+        "matrix": {
+          "xx": -1.689692621,
+          "xy": 0.342020143,
+          "yy": 0.189692621,
+        },
+        "power": {
+          "axis": 170,
+          "cylinder": 2,
+          "sphere": -1.75,
+        },
+      },
+    },
+    {
+      "label": "Pintaväli, refraktio",
+      "name": "vertexRefraction",
+      "value": {
+        "kind": "scalar",
+        "unit": "mm",
+        "value": 13.5,
+      },
+    },
+    {
+      "label": "Pintaväli, käyttö",
+      "name": "vertexWorn",
+      "value": {
+        "kind": "scalar",
+        "unit": "mm",
+        "value": 11,
+      },
+    },
+    {
+      "label": "Tavoite käytön pintavälillä",
+      "name": "target",
+      "value": {
+        "kind": "matrix",
+        "matrix": {
+          "xx": -1.682294865,
+          "xy": 0.340743288,
+          "yy": 0.190074113,
+        },
+        "power": {
+          "axis": 170,
+          "cylinder": 1.992533448,
+          "sphere": -1.7423771,
+        },
+      },
+    },
+    {
+      "label": "Wrap per linssi",
+      "name": "wrapPerLens",
+      "value": {
+        "kind": "scalar",
+        "unit": "deg",
+        "value": 15,
+      },
+    },
+    {
+      "label": "Wrap etumerkillisenä (OD negatiivinen)",
+      "name": "beta",
+      "value": {
+        "kind": "scalar",
+        "unit": "deg",
+        "value": 15,
+      },
+    },
+    {
+      "label": "Pantoskooppinen kaltevuus",
+      "name": "panto",
+      "value": {
+        "kind": "scalar",
+        "unit": "deg",
+        "value": 18,
+      },
+    },
+    {
+      "label": "Kokonaiskallistus τ",
+      "name": "tau",
+      "value": {
+        "kind": "scalar",
+        "unit": "deg",
+        "value": 23.270480219,
+      },
+    },
+    {
+      "label": "Tangentiaalimeridiaani μ",
+      "name": "mu",
+      "value": {
+        "kind": "scalar",
+        "unit": "deg",
+        "value": 130.928617614,
+      },
+    },
+    {
+      "label": "Linssitason normaali n̂",
+      "name": "normal",
+      "value": {
+        "kind": "vector3",
+        "value": [
+          0.258819045,
+          -0.298487496,
+          0.918650051,
+        ],
+      },
+    },
+    {
+      "label": "Base curve -korjaus mukana",
+      "name": "baseCurveApplied",
+      "value": {
+        "kind": "flag",
+        "value": false,
+      },
+    },
+    {
+      "label": "OCR-menetelmä",
+      "name": "ocrMethod",
+      "value": {
+        "kind": "text",
+        "value": "exact",
+      },
+    },
+    {
+      "label": "k_sag",
+      "name": "kSag",
+      "value": {
+        "kind": "scalar",
+        "unit": "ratio",
+        "value": 1.053508159,
+      },
+    },
+    {
+      "label": "k_tan",
+      "name": "kTan",
+      "value": {
+        "kind": "scalar",
+        "unit": "ratio",
+        "value": 1.248353824,
+      },
+    },
+    {
+      "label": "k_risti",
+      "name": "kCross",
+      "value": {
+        "kind": "scalar",
+        "unit": "ratio",
+        "value": 1.146800304,
+      },
+    },
+    {
+      "label": "Tilattava, tarkka",
+      "name": "orderedExact",
+      "value": {
+        "kind": "matrix",
+        "matrix": {
+          "xx": -1.461863309,
+          "xy": 0.243049061,
+          "yy": 0.186301053,
+        },
+        "power": {
+          "axis": 171.783735165,
+          "cylinder": 1.718353033,
+          "sphere": -1.496957645,
+        },
+      },
+    },
+    {
+      "label": "Tilattava, 0,25 D (ruudukkohaku)",
+      "name": "orderedRounded",
+      "value": {
+        "kind": "matrix",
+        "matrix": {
+          "xx": -1.466103984,
+          "xy": 0.241182686,
+          "yy": 0.216103984,
+        },
+        "power": {
+          "axis": 172,
+          "cylinder": 1.75,
+          "sphere": -1.5,
+        },
+      },
+    },
+    {
+      "label": "Tilattava, 0,25 D (naiivi pyöristys)",
+      "name": "orderedNaive",
+      "value": {
+        "kind": "matrix",
+        "matrix": {
+          "xx": -1.466103984,
+          "xy": 0.241182686,
+          "yy": 0.216103984,
+        },
+        "power": {
+          "axis": 172,
+          "cylinder": 1.75,
+          "sphere": -1.5,
+        },
+      },
+    },
+    {
+      "label": "Ruudukkohaun etäisyys tavoitteesta",
+      "name": "roundingDistance",
+      "value": {
+        "kind": "scalar",
+        "unit": "D",
+        "value": 0.030218616,
+      },
+    },
+    {
+      "label": "Naiivin etäisyys tavoitteesta",
+      "name": "roundingNaiveDistance",
+      "value": {
+        "kind": "scalar",
+        "unit": "D",
+        "value": 0.030218616,
+      },
+    },
+    {
+      "label": "Ruudukkohaku paransi naiivia",
+      "name": "roundingImproved",
+      "value": {
+        "kind": "flag",
+        "value": false,
+      },
+    },
+    {
+      "label": "Arvioidut ehdokkaat",
+      "name": "roundingCandidates",
+      "value": {
+        "kind": "scalar",
+        "unit": "count",
+        "value": 99,
+      },
+    },
+    {
+      "label": "Toteutuva silmällä, tarkka",
+      "name": "asWornExact",
+      "value": {
+        "kind": "matrix",
+        "matrix": {
+          "xx": -1.682294865,
+          "xy": 0.340743288,
+          "yy": 0.190074113,
+        },
+        "power": {
+          "axis": 170,
+          "cylinder": 1.992533448,
+          "sphere": -1.7423771,
+        },
+      },
+    },
+    {
+      "label": "Toteutuva silmällä, 0,25 D",
+      "name": "asWornRounded",
+      "value": {
+        "kind": "matrix",
+        "matrix": {
+          "xx": -1.686869258,
+          "xy": 0.337352895,
+          "yy": 0.224898654,
+        },
+        "power": {
+          "axis": 170.280459971,
+          "cylinder": 2.027334322,
+          "sphere": -1.744652463,
+        },
+      },
+    },
+    {
+      "label": "Toteutuva silmällä, kompensoimaton resepti",
+      "name": "asWornUncompensated",
+      "value": {
+        "kind": "matrix",
+        "matrix": {
+          "xx": -1.950386411,
+          "xy": 0.465399473,
+          "yy": 0.183954248,
+        },
+        "power": {
+          "axis": 168.218845622,
+          "cylinder": 2.328475194,
+          "sphere": -2.047453678,
+        },
+      },
+    },
+    {
+      "label": "Residuaali, tarkka",
+      "name": "residualExact",
+      "value": {
+        "kind": "scalar",
+        "unit": "D",
+        "value": 0,
+      },
+    },
+    {
+      "label": "Residuaali, 0,25 D",
+      "name": "residualRounded",
+      "value": {
+        "kind": "scalar",
+        "unit": "D",
+        "value": 0.035449447,
+      },
+    },
+    {
+      "label": "Residuaali, kompensoimaton",
+      "name": "residualUncompensated",
+      "value": {
+        "kind": "scalar",
+        "unit": "D",
+        "value": 0.320918773,
+      },
+    },
+    {
+      "label": "Desentraatio, kierretty taso",
+      "name": "decentrationHorizontal",
+      "value": {
+        "kind": "scalar",
+        "unit": "mm",
+        "value": 1.853524137,
+      },
+    },
+    {
+      "label": "Desentraatio, boxing-taso (vertailu)",
+      "name": "decentrationBoxing",
+      "value": {
+        "kind": "scalar",
+        "unit": "mm",
+        "value": 3,
+      },
+    },
+    {
+      "label": "Kompensoitu PD (vertailu)",
+      "name": "compensatedPd",
+      "value": {
+        "kind": "scalar",
+        "unit": "mm",
+        "value": 33.646475863,
+      },
+    },
+    {
+      "label": "OC-korkeus, kierretty taso",
+      "name": "ocHeight",
+      "value": {
+        "kind": "scalar",
+        "unit": "mm",
+        "value": 22.361721761,
+      },
+    },
+    {
+      "label": "OC-korkeus, sovituskorkeus sellaisenaan (vertailu)",
+      "name": "ocHeightBoxing",
+      "value": {
+        "kind": "scalar",
+        "unit": "mm",
+        "value": 22,
+      },
+    },
+    {
+      "label": "OC-korkeus, nyrkkisääntö 1 mm / 2° (vertailu)",
+      "name": "ocHeightVogel",
+      "value": {
+        "kind": "scalar",
+        "unit": "mm",
+        "value": 13,
+      },
+    },
+    {
+      "label": "OC-korkeus, akseli kiertokeskiöön (vaihtoehtoinen kriteeri)",
+      "name": "ocHeightOpticalAxis",
+      "value": {
+        "kind": "scalar",
+        "unit": "mm",
+        "value": 14.790805399,
+      },
+    },
+    {
+      "label": "Katselinjan lävistyspiste, h",
+      "name": "visualPointH",
+      "value": {
+        "kind": "scalar",
+        "unit": "mm",
+        "value": -1.853524137,
+      },
+    },
+    {
+      "label": "Katselinjan lävistyspiste, v",
+      "name": "visualPointV",
+      "value": {
+        "kind": "scalar",
+        "unit": "mm",
+        "value": 4.361721761,
+      },
+    },
+    {
+      "label": "Prentice-prisma boxing-keskiössä",
+      "name": "inducedPrismMagnitude",
+      "value": {
+        "kind": "scalar",
+        "unit": "pd",
+        "value": 0.378706177,
+      },
+    },
+  ],
+}
+`;

@@ -1,0 +1,14 @@
+node_modules/
+dist/
+dist-ssr/
+*.local
+.DS_Store
+.vite/
+coverage/
+
+# Valmistajan referenssidata voi sisältää liikkeen tilaustietoja -> ei versionhallintaan.
+# Skeema ja README kansiossa kuljetetaan mukana, CSV-tiedostot eivät.
+test/cases/lab/*.csv
+
+# Claude Code -istuntokohtaiset asetukset (launch.json kulkee mukana, muu ei).
+.claude/settings.local.json

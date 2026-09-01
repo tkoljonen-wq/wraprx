@@ -1,0 +1,3 @@
+# Repo pitää LF-rivinvaihdot myös Windowsilla, jotta CI (Ubuntu) ja työasema
+# eivät tuota keskenään eroavia diffejä.
+* text=auto eol=lf

@@ -1,0 +1,36 @@
+{
+  "note": "Taitekerroin (n_d) ja Abbe-luku (nu_d) kirjataan valmistajan tiedoista, ei muistista (suunnitelma §9.1 kohta 2). Jokaiselle riville merkitään lähde. Korkeaindeksisten materiaalien tarkat arvot vaihtelevat tuotteittain, joten niitä EI ole täytetty tähän ennalta — lisää rivi vasta kun sinulla on valmistajan datalehti.",
+  "materials": [
+    {
+      "id": "cr39",
+      "name": "CR-39 (allyylidiglykolikarbonaatti)",
+      "index": 1.498,
+      "abbe": 58,
+      "density": 1.32,
+      "tradeNames": ["CR-39", "Orma"],
+      "source": "Vakiintunut materiaaliarvo; suunnitelma §9.1 kohta 2 mainitsee tämän vakiintuneena."
+    },
+    {
+      "id": "polycarbonate",
+      "name": "Polykarbonaatti",
+      "index": 1.586,
+      "abbe": 30,
+      "density": 1.2,
+      "tradeNames": ["PC", "Airwear"],
+      "source": "Vakiintunut materiaaliarvo; suunnitelma §9.1 kohta 2 mainitsee tämän vakiintuneena."
+    },
+    {
+      "id": "trivex",
+      "name": "Trivex",
+      "index": 1.532,
+      "abbe": 43,
+      "density": 1.11,
+      "tradeNames": ["Trivex", "Trilogy", "Phoenix"],
+      "source": "Vakiintunut materiaaliarvo; suunnitelma §9.1 kohta 2 mainitsee tämän vakiintuneena."
+    }
+  ],
+  "missing": [
+    "1.60-, 1.67- ja 1.74-materiaalit: tarkat n ja nu ovat tuotekohtaisia. Täytä valmistajan datalehdestä ja merkitse lähde.",
+    "Kivilasi (n ~1.523): lisää vasta lähteen kanssa; myös kolmas pyöristysaskel 0,12 D liittyy tähän (labProfile.extraStep, vaihe P4)."
+  ]
+}

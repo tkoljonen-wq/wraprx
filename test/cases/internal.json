@@ -1,0 +1,185 @@
+{
+  "note": "Sisäiset referenssitapaukset. Odotusarvot on johdettu käsin ja johto on kirjattu tiedostoon derivations.md (suunnitelma §5.3). Näitä lukuja EI ole tuotettu tällä koodilla — muuten testi toistaisi oletukset, joita sen pitäisi tarkistaa.",
+  "defaultTolerance": { "power": 0.005, "axis": 0.5, "mm": 0.05 },
+  "cases": [
+    {
+      "id": "plan-own-case",
+      "derivation": "derivations.md#tapaus-1--plan-own-case",
+      "description": "Suunnitelman §5.3 oma tapaus, wrap 15°/linssi, panto 18°, PC.",
+      "input": {
+        "od": { "sphere": -1.0, "cylinder": 0.5, "axis": 175, "monoPd": 32 },
+        "os": { "sphere": -1.75, "cylinder": 2.0, "axis": 170, "monoPd": 32 },
+        "frame": { "panto": 18, "wrap": 15, "wrapMode": "perLens", "anglesMeasured": true },
+        "material": { "index": 1.586, "abbe": 30 },
+        "vertexRefraction": 12,
+        "vertexWorn": 12,
+        "ocrMethod": "exact"
+      },
+      "expected": {
+        "od": {
+          "exact": { "sphere": -0.9033923, "cylinder": 0.4825492, "axis": 168.6507 },
+          "naiveRounded025": { "sphere": -1.0, "cylinder": 0.5, "axis": 169 },
+          "tau": 23.2705,
+          "mu": 49.0715
+        },
+        "os": {
+          "exact": { "sphere": -1.503518, "cylinder": 1.7247653, "axis": 171.7859 },
+          "naiveRounded025": { "sphere": -1.5, "cylinder": 1.75, "axis": 172 },
+          "tau": 23.2705,
+          "mu": 130.9285
+        }
+      }
+    },
+    {
+      "id": "tau-zero-identity",
+      "derivation": "derivations.md#tapaus-2--tau-zero-identity",
+      "description": "Ei kallistusta, ei pintavälieroa -> käännös on identiteetti.",
+      "input": {
+        "od": { "sphere": -2.25, "cylinder": 1.0, "axis": 90, "monoPd": 31 },
+        "os": { "sphere": -2.25, "cylinder": 1.0, "axis": 90, "monoPd": 31 },
+        "frame": { "panto": 0, "wrap": 0, "wrapMode": "perLens", "anglesMeasured": true },
+        "material": { "index": 1.586, "abbe": 30 },
+        "vertexRefraction": 12,
+        "vertexWorn": 12,
+        "ocrMethod": "exact"
+      },
+      "expected": {
+        "od": {
+          "exact": { "sphere": -2.25, "cylinder": 1.0, "axis": 90 },
+          "tau": 0
+        },
+        "os": {
+          "exact": { "sphere": -2.25, "cylinder": 1.0, "axis": 90 },
+          "tau": 0
+        }
+      }
+    },
+    {
+      "id": "vertex-only",
+      "derivation": "derivations.md#tapaus-3--vertex-only",
+      "description": "Vain pintavälikorjaus 13,5 mm -> 10,0 mm, ei kallistusta.",
+      "input": {
+        "od": { "sphere": -8.0, "cylinder": 0, "axis": 180, "monoPd": 30 },
+        "os": { "sphere": -8.0, "cylinder": 0, "axis": 180, "monoPd": 30 },
+        "frame": { "panto": 0, "wrap": 0, "wrapMode": "perLens", "anglesMeasured": true },
+        "material": { "index": 1.586, "abbe": 30 },
+        "vertexRefraction": 13.5,
+        "vertexWorn": 10.0,
+        "ocrMethod": "exact"
+      },
+      "expected": {
+        "od": { "exact": { "sphere": -7.782101, "cylinder": 0, "axis": 180 } },
+        "os": { "exact": { "sphere": -7.782101, "cylinder": 0, "axis": 180 } }
+      }
+    },
+    {
+      "id": "panto-only-exact",
+      "derivation": "derivations.md#tapaus-4--panto-only-exact-ja-panto-only-martin",
+      "description": "-4,00 sph, panto 20°, wrap 0°, exakti malli.",
+      "input": {
+        "od": { "sphere": -4.0, "cylinder": 0, "axis": 180, "monoPd": 32 },
+        "os": { "sphere": -4.0, "cylinder": 0, "axis": 180, "monoPd": 32 },
+        "frame": { "panto": 20, "wrap": 0, "wrapMode": "perLens", "anglesMeasured": true },
+        "material": { "index": 1.586, "abbe": 30 },
+        "vertexRefraction": 12,
+        "vertexWorn": 12,
+        "ocrMethod": "exact"
+      },
+      "expected": {
+        "od": {
+          "exact": { "sphere": -3.848975, "cylinder": 0.449082, "axis": 180 },
+          "mu": 90
+        },
+        "os": {
+          "exact": { "sphere": -3.848975, "cylinder": 0.449082, "axis": 180 },
+          "mu": 90
+        }
+      }
+    },
+    {
+      "id": "panto-only-martin",
+      "derivation": "derivations.md#tapaus-4--panto-only-exact-ja-panto-only-martin",
+      "description": "Sama tapaus Martinin sarjakehitelmällä; ero exaktiin ~0,01 D.",
+      "input": {
+        "od": { "sphere": -4.0, "cylinder": 0, "axis": 180, "monoPd": 32 },
+        "os": { "sphere": -4.0, "cylinder": 0, "axis": 180, "monoPd": 32 },
+        "frame": { "panto": 20, "wrap": 0, "wrapMode": "perLens", "anglesMeasured": true },
+        "material": { "index": 1.586, "abbe": 30 },
+        "vertexRefraction": 12,
+        "vertexWorn": 12,
+        "ocrMethod": "martin"
+      },
+      "expected": {
+        "od": { "exact": { "sphere": -3.857724, "cylinder": 0.437034, "axis": 180 } },
+        "os": { "exact": { "sphere": -3.857724, "cylinder": 0.437034, "axis": 180 } }
+      }
+    },
+    {
+      "id": "plano-stays-plano",
+      "derivation": "derivations.md#tapaus-5--plano-stays-plano",
+      "description": "Plano kallistuksella: tilattava plano, hyötyarvio epätosi.",
+      "input": {
+        "od": { "sphere": 0, "cylinder": 0, "axis": 180, "monoPd": 32 },
+        "os": { "sphere": 0, "cylinder": 0, "axis": 180, "monoPd": 32 },
+        "frame": { "panto": 18, "wrap": 15, "wrapMode": "perLens", "anglesMeasured": true },
+        "material": { "index": 1.586, "abbe": 30 },
+        "vertexRefraction": 12,
+        "vertexWorn": 12,
+        "ocrMethod": "exact"
+      },
+      "expected": {
+        "od": {
+          "exact": { "sphere": 0, "cylinder": 0, "axis": 180 },
+          "compensationWorthwhile": false
+        },
+        "os": {
+          "exact": { "sphere": 0, "cylinder": 0, "axis": 180 },
+          "compensationWorthwhile": false
+        }
+      }
+    },
+    {
+      "id": "pure-cylinder-on-tilt-meridian",
+      "derivation": "derivations.md#tapaus-6--pure-cylinder-on-tilt-meridian",
+      "description": "Puhdas sylinteri tilausmeridiaanilla pysyy puhtaana sylinterinä.",
+      "input": {
+        "od": { "sphere": 0, "cylinder": 2.0, "axis": 90, "monoPd": 32 },
+        "os": { "sphere": 0, "cylinder": 2.0, "axis": 90, "monoPd": 32 },
+        "frame": { "panto": 20, "wrap": 0, "wrapMode": "perLens", "anglesMeasured": true },
+        "material": { "index": 1.586, "abbe": 30 },
+        "vertexRefraction": 12,
+        "vertexWorn": 12,
+        "ocrMethod": "exact"
+      },
+      "expected": {
+        "od": { "exact": { "sphere": 0, "cylinder": 1.924487, "axis": 90 } },
+        "os": { "exact": { "sphere": 0, "cylinder": 1.924487, "axis": 90 } }
+      }
+    },
+    {
+      "id": "no-benefit-low-power",
+      "derivation": "derivations.md#tapaus-7--no-benefit-low-power",
+      "description": "Matala voimakkuus: 0,25 D:n pyöristys palauttaa alkuperäisen reseptin.",
+      "input": {
+        "od": { "sphere": -0.5, "cylinder": 0, "axis": 180, "monoPd": 32 },
+        "os": { "sphere": -0.5, "cylinder": 0, "axis": 180, "monoPd": 32 },
+        "frame": { "panto": 8, "wrap": 5, "wrapMode": "perLens", "anglesMeasured": true },
+        "material": { "index": 1.586, "abbe": 30 },
+        "vertexRefraction": 12,
+        "vertexWorn": 12,
+        "ocrMethod": "exact"
+      },
+      "expected": {
+        "od": {
+          "exact": { "sphere": -0.4957467, "cylinder": 0.0132925, "axis": 147.845 },
+          "rounded025": { "sphere": -0.5, "cylinder": 0, "axis": 180 },
+          "compensationWorthwhile": false
+        },
+        "os": {
+          "rounded025": { "sphere": -0.5, "cylinder": 0, "axis": 180 },
+          "compensationWorthwhile": false
+        }
+      }
+    }
+  ]
+}
