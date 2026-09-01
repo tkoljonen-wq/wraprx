@@ -65,9 +65,11 @@ Johto vahvisti myös etumerkkivalinnan `betaDeg < 0` OD:lle.
 2. **P2 seuraavaksi:** `prism.ts` täydellä Snell-mallilla ja prismakäännöksellä. P1:n
    käyttöliittymässä on jo prismakentät ja varoitus `prismNotCompensated`, joten P2
    näkyy suoraan tuloskorteissa ilman uutta kytkentätyötä.
-3. **Repo ei ole vielä git-repo.** `.github/workflows/ci.yml` ja `.gitignore` ovat
-   valmiina, mutta `git init` on tekemättä eikä committia ole. CI:n `npm ci` tarvitsee
-   `package-lock.json`:in, joka on olemassa.
+3. **Git on käytössä 1.9.2026 alkaen.** Haara `main`, ensimmäinen commit sisältää P0:n
+   ja P1:n. Etäpalvelinta ei ole vielä lisätty, joten CI ja Pages-julkaisu eivät ole
+   vielä ajaneet kertaakaan — ne käynnistyvät, kun repo työnnetään GitHubiin.
+   `.gitattributes` pakottaa LF:n, jotta Ubuntu-CI ja Windows-työasema eivät tuota
+   eroavia diffejä.
 4. **Ei kiireellistä velkaa.** Suunnitelma on repossa kahdesti: alkuperäinen
    `wrap-rx-suunnitelma-v0.5.md` juuressa ja kopio `docs/PLAN.md`. Juuren kopio voi
    poistua, kun se ei enää tunnu tarpeelliselta.
