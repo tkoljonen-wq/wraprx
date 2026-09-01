@@ -310,3 +310,98 @@ hyötyarvion on oltava **epätosi**: *"kompensointi ei tuo hyötyä tässä silm
 askeleella — tilaa alkuperäinen resepti."*
 
 Tämä tapaus on ohjelman rehellisyystesti, ei tarkkuustesti.
+
+---
+
+## Tapaus 8 — `wedge-untilted` (prisma, vaihe P2)
+
+Kiilan poikkeutus ilman kallistusta. Tämä johto käyttää **skalaarista prismakaavaa**,
+joka on eri muotoilu kuin koodin vektorimuotoinen Snell — siksi yhtäpitävyys on
+todellinen tarkistus eikä saman laskun toisto.
+
+Kiila: kiilakulma A = 5°, n = 1,586, kanta ê_h:n suuntaan, linssitaso kallistamaton
+(n̂ = ẑ). Tulossuunta (0, 0, −1). Etupinnan normaali on n̂ kierrettynä 5° kannasta
+poispäin, joten se muodostaa 5°:n kulman tulosuunnan kanssa: **i₁ = 5°**.
+
+Skalaarinen prismakaava (tulokulma i₁, taitekulmat r₁ ja r₂ = A − r₁, lähtökulma i₂):
+
+```
+sin i₁ = 0,0871557427
+sin r₁ = 0,0871557427 / 1,586 = 0,05495318
+r₁     = asin(0,05495318) = 0,05498088 rad = 3,150175°
+r₂     = A − r₁ = 5° − 3,150175° = 1,849825° = 0,03228586 rad
+sin r₂ = 0,03228025
+sin i₂ = 1,586 · 0,03228025 = 0,05119648
+i₂     = asin(0,05119648) = 0,05121887 rad = 2,934625°
+δ      = i₁ + i₂ − A = 5° + 2,934625° − 5° = 2,934625° = 0,05121887 rad
+P      = 100 · tan δ = 100 · 0,05126365
+```
+
+**Odotusarvo: P = 5,1264 pd, suunta +x (kanta).**
+
+Vertailu ohuen prisman nyrkkisääntöön 100·(n−1)·A = 100·0,586·0,0872665 = 5,1138 pd.
+Ero exaktiin on 0,013 pd, eli nyrkkisääntö on oikeassa kokoluokassa muttei riittävä
+0,001 pd:n toleranssiin — juuri siksi §3.5 vaatii exaktin Snellin.
+
+**Suunta on osa odotusarvoa.** Kiila, jonka kanta osoittaa suuntaan +x, poikkeuttaa
+säteen suuntaan +x: prisma taittaa valoa kantaa kohti. Jos etumerkki kääntyisi, koko
+kantasuuntanotaatio kääntyisi peilikuvaksi (§9.1 kohta 3: hiljainen ja tuhoisa virhe).
+
+---
+
+## Tapaus 9 — `wedge-tilted-wrap` (prisma kallistettuna, vaihe P2)
+
+Sama kiila (A = 5°, n = 1,586, kanta ê_h:n suuntaan), mutta linssi on kallistettu:
+OS, wrap β = +15°, panto 0°. Kallistus on **kanta–kärki-tasossa**, joten koko kulku
+pysyy xz-tasossa ja johto voidaan tehdä käsin tasogeometriana.
+
+```
+n̂     = ( sin 15°, 0,  cos 15°)                          takapinnan normaali, +15° z-akselista
+ê_h   = ( cos 15°, 0, −sin 15°)
+n̂_etu = cos A · n̂ − sin A · ê_h = ( sin 10°, 0, cos 10° )  etupinnan normaali, +10°
+```
+
+Pintojen välinen kulma on 15° − 10° = 5° = A, kuten pitääkin.
+
+**Etumerkit on pakko pitää mukana.** Kun kallistus (15°) on suurempi kuin kiilakulma
+(5°), tuleva säde osuu etupintaan normaalin *toiselta* puolelta kuin kallistamattomassa
+tapauksessa. Silloin klassinen r₂ = A − r₁ EI päde: se olettaa kiilan perusasennon.
+Yleinen etumerkillinen muoto, kun θ₁ ja θ₂ ovat etu- ja takapinnan normaalien kulmat
+z-akselista (positiivinen +x:ää kohti) ja kulmat mitataan kulkusuunnasta:
+
+```
+sisäinen säde   = −θ₁ + asin(sin θ₁ / n)
+sisäinen tulokulma takapinnalla  u₂ = θ₂ − θ₁ + asin(sin θ₁ / n)
+lähtökulma      = −θ₂ + asin(n · sin u₂)
+δ               = lähtökulma
+```
+
+Tapaus 8 on tämän erikoistapaus: θ₁ = −5°, θ₂ = 0° antaa u₂ = A − r₁ = 1,849825°.
+
+Tapaus 9, θ₁ = +10°, θ₂ = +15°:
+
+```
+asin(sin 10° / 1,586) = asin(0,10948813) = 0,10970807 rad = 6,285809°
+sisäinen säde = −10° + 6,285809° = −3,714191°
+u₂            = 15° − 10° + 6,285809° = 11,285809°
+sin u₂        = 0,19570331
+n · sin u₂    = 1,586 · 0,19570331 = 0,31038545
+asin(0,31038545) = 0,3155980 rad = 18,082439°
+lähtökulma    = −15° + 18,082439° = 3,082439° = 0,05379871 rad
+P             = 100 · tan δ = 100 · 0,05385069
+```
+
+**Odotusarvo: P = 5,3851 pd, vaakakomponentti positiivinen.**
+
+Sama kiila tuottaa siis kallistettuna **0,26 pd enemmän** prismaa kuin suorassa
+(5,3851 vs. 5,1264) — 5 % lisää. Jos kanta olisi kohtisuorassa kallistustasoon nähden,
+muutos olisi eri. Tämä on §3.5:n perustelu numeroina: approksimaatio ei kelpaa, koska
+vaikutus riippuu kallistuksen suunnasta kanta–kärki-akseliin nähden.
+
+### Johtovirhe, joka jäi kiinni
+
+Tämän tapauksen ensimmäinen johto käytti kaavaa r₂ = A − r₁ tarkistamatta etumerkkejä
+ja antoi 5,1715 pd. Testi kaatui, ja tarkistus osoitti johdon vääräksi, ei koodia.
+Virhe on kirjattu tähän, koska se on juuri se virhe, jonka tämä geometria houkuttelee
+tekemään: kallistus on suurempi kuin kiilakulma, jolloin sisäinen säde kulkee
+takapinnan normaalin toisella puolella ja etumerkki kääntyy.

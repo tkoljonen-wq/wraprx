@@ -161,3 +161,68 @@ sylinterille tarvitaan myös ristitermin kerroin; toteutus käyttää geometrist
 `√(k_tan · k_sag)`, joka yhtyy exaktiin muotoon toiseen kertalukuun asti. Vertailu
 ulkoisiin työkaluihin ei koskaan koettele tätä, koska ne käsittelevät vain
 kallistusmeridiaanille asettuvia sylintereitä.
+
+## 11. Prisman käännös: kaksi valintaa, jotka suunnitelma jättää auki (P2)
+
+### 11.1 Mitä "tilattava prisma" tarkoittaa
+
+Suunnitelman §3.5 pysähtyy kiilaan: *"etsitään kiilakulma ja kanta-suunta, joilla
+kallistetun linssin poikkeutus vastaa haluttua."* Se ei sano, missä muodossa tulos
+ilmoitetaan linssitalolle. Kiilakulmaa ei tilata — tilataan prisma.
+
+**Toteutettu valinta:** tilattava prisma on saman kiilan poikkeutus **kallistamattomana**
+eli focimetrin geometriassa. Perustelu: juuri sen linssitalo mittaa ja siihen se sitoutuu.
+Kiila on välimuuttuja, joka ei näy tilausrivillä.
+
+Ketju on siis:
+
+```
+resepti (tavoite silmällä)
+  -> kiila, jonka poikkeutus KALLISTETUSSA kehyksessä on tavoite
+  -> saman kiilan poikkeutus KALLISTAMATTOMANA = tilattava nimellisprisma
+  -> pyöristys linssitalon askeleeseen
+  -> pyöristetystä nimellisarvosta takaisin kiilaksi ja eteenpäin kallistettuun
+     kehykseen = mitä pyöristetyllä tilauksella oikeasti toteutuu
+```
+
+**Tarkistettava linssitalolta**, samaan tapaan kuin kantasuunnan nollasuunta (kohta 8):
+mittaako talo prisman focimetrillä linssi suorassa (oletus tässä) vai ilmoittaako se
+prisman jossakin muussa asennossa? Jos jälkimmäinen, muutos osuu tähän yhteen kohtaan.
+
+### 11.2 Kiilan parametrisointi ja nollan lähistö
+
+Suunnitelma määrää 2D-juurenhaun napakoordinaateissa (kiilakulma, kantasuunta) ja
+erikoistapauksen |P| < 0,05 pd, koska *"nollaprisman lähellä jakobiaani on lähes
+singulaarinen"*.
+
+**Toteutettu valinta:** kiila esitetään sisäisesti **karteesisena** vektorina
+w = (w_h, w_v) linssitason kannassa. Silloin kiilakulma on |w| ja kanta w:n suunta, ja
+poikkeutus on w:n sileä funktio myös nollan läpi. Singulariteetti oli parametrisoinnissa,
+ei tehtävässä: napakoordinaateissa kantasuunta ei ole määritelty, kun kiilakulma on nolla.
+
+Suunnitelman erikoistapaus on silti toteutettu — nollan lähellä otetaan yksi lineaarinen
+askel ilman iteraatiota — mutta se on nyt nopeutus, ei singulariteetin kiertäminen.
+
+Suunnitelman lause *"tilattava prisma = kallistuksen indusoiman prisman vastaluku"*
+ei sovellu tähän malliin: kiilamallissa tasopaksu levy (kiilakulma 0) ei poikkeuta
+sädettä millään kallistuksella, joten kallistus ei sinänsä indusoi prismaa. Nolla-
+tavoite antaa nollakiilan. Kallistuksen vaikutus näkyy siinä, että sama kiila
+poikkeuttaa kallellaan eri määrän kuin suorassa — ei siinä, että kallistus tuottaisi
+prismaa tyhjästä. **Jos tämä lause tarkoitti jotain muuta, kysy.**
+
+Alkuarvaus on lineaarinen askel nollasta (J(0)⁻¹·tavoite) eikä suunnitelman karkea
+ruudukkohaku; ruudukko on jäljellä varasuunnitelmana, jos Newton ei suppene
+lineaarisesta arvauksesta. Syy: tehtävä on lähes lineaarinen, ja lineaarinen arvaus on
+tarkempi kuin 0,5°:n ruudukko.
+
+### 11.3 Mallin määrittelyalue
+
+`wedgeDeviation` palauttaa `null`, jos kiilakulma on 90° tai enemmän: sen yli etupinnan
+normaali kääntyy poispäin tulevasta valosta eikä kyseessä ole enää linssin pinta. Raja
+löytyi testatessa — ilman sitä juurenhaku vaelsi 253°:n "kiilaan", joka on matematiikkaa
+muttei geometriaa.
+
+Huom: prisman **suuruus** ei ole tässä mallissa rajoite. Poikkeutus kasvaa rajatta, kun
+lähtevä säde lähestyy takapinnan sivuamista, joten mikä tahansa prisma on periaatteessa
+saavutettavissa — järjettömän suurella kiilakulmalla. Käytännön raja tulee
+`validate.ts`:stä, joka rajaa reseptin prisman 20 pd:hen.

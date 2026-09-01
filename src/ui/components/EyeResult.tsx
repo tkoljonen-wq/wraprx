@@ -6,6 +6,7 @@ import type { EyeResult as EyeResultData } from '../../optics/index.js';
 import { FLAGS } from '../flags.js';
 import { fi } from '../i18n/fi.js';
 import { DecentrationPanel } from './Decentration.js';
+import { PrismPanel } from './PrismPanel.js';
 import { ResultCard } from './ResultCard.js';
 import { TracePanel } from './TracePanel.js';
 import { WarningList } from './Warnings.js';
@@ -74,6 +75,8 @@ export function EyeResultPanel({
       </dl>
 
       <WarningList warnings={result.warnings} />
+
+      <PrismPanel eye={result.eye} prism={result.prism} />
 
       {FLAGS.showDecentration && result.decentration ? (
         <DecentrationPanel eye={result.eye} decentration={result.decentration} />

@@ -157,7 +157,9 @@ const WARNING_TEXT: Record<Warning['code'], string> = {
   labCompensatesInternally:
     'Linssitalo kompensoi itse: ÄLÄ tilaa näitä arvoja, vaan alkuperäinen resepti ja kehysparametrit.',
   prismNotCompensated:
-    'Reseptin prismaa ei ole käännetty kallistukselle (vaihe P2); prisma on välitetty sellaisenaan.',
+    'Prismamalli on kytketty pois: reseptin prisma on välitetty kääntämättä. Vertailua varten, ei tilaamiseen.',
+  prismSolveFailed:
+    'Prisman käännös ei supennut. Prisma-arvoa ei näytetä: arvaus olisi vaarallisempi kuin puuttuva luku.',
   anglesNotMeasured: 'Kulmat ovat nimellisiä, ei kasvoilta mitattuja — luottamusarvio heikkenee.',
   frameDimensionsMissing:
     'Kehysmitat puuttuvat, joten desentraatiota, OC-korkeutta ja Prentice-prismaa ei laskettu.',

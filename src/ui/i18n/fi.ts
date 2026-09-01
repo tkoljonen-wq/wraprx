@@ -39,7 +39,8 @@ export const fi = {
     monoPd: 'Monokulaarinen PD (mm)',
     prismMagnitude: 'Prisma (pd)',
     prismBase: 'Kantasuunta (°, 360°-notaatio)',
-    prismHint: 'Reseptin prismaa ei vielä käännetä kallistukselle (vaihe P2).',
+    prismHint:
+      'Reseptin prisma on tavoite silmällä. Ohjelma laskee, mikä prisma pitää tilata, jotta kallellaan oleva linssi tuottaa sen.',
 
     panto: 'Pantoskooppinen kaltevuus (°)',
     wrap: 'Wrap-kulma (°)',
@@ -59,7 +60,8 @@ export const fi = {
     vertexRefraction: 'Pintaväli refraktiossa (mm)',
     vertexWorn: 'Pintaväli käytössä (mm)',
     cra: 'Kiertokeskiön etäisyys CRA (mm)',
-    craHint: 'Ei vaikuta OC-korkeuteen, tarvitaan vertailulukuun ja vaiheeseen P2.',
+    craHint:
+      'Ei vaikuta OC-korkeuteen eikä prisman käännökseen. Tarvitaan vertailulukuun "optinen akseli kiertokeskiöön".',
 
     labCompensates: 'Linssitalo kompensoi itse',
     axisStep: 'Akseliaskel (°)',
@@ -68,6 +70,11 @@ export const fi = {
     cylFormPlus: 'plusmuoto',
     cylFormMinus: 'miinusmuoto',
 
+    prismModel: 'Prismamalli',
+    prismWedge: 'kiila + Snell',
+    prismPassThrough: 'ei käännöstä',
+    prismModelHint:
+      'Kiilamalli kääntää reseptin prisman kallistetulle linssille (§3.5). Ilman käännöstä arvo välitetään sellaisenaan.',
     ocrMethod: 'Kallistusmalli',
     ocrExact: 'exakti',
     ocrMartin: 'Martin (vain vertailu)',
@@ -99,6 +106,27 @@ export const fi = {
     worthwhile: 'Kompensointi kannattaa',
     notWorthwhile: 'Kompensointi ei tuo hyötyä — tilaa alkuperäinen resepti',
     orderLine: 'Tilausrivi',
+  },
+
+  prism: {
+    title: 'Prisma',
+    ordered: 'Tilattava prisma',
+    orderedHint:
+      'Kiilan poikkeutus kallistamattomana — se luku, jonka linssitalo mittaa focimetrillä. Kallistetussa kehyksessä se ei ole sama kuin reseptin prisma.',
+    prescribed: 'Resepti (tavoite silmällä)',
+    orderedExact: 'Tilattava, tarkka',
+    orderedRoundedLabel: 'Tilattava, pyöristetty',
+    asWorn: 'Toteutuu silmällä',
+    asWornUncompensated: 'Ilman käännöstä toteutuisi',
+    residual: 'Jäännösvirhe',
+    residualUncompensated: 'ilman käännöstä',
+    tca: 'Kromaattinen aberraatio P/ν',
+    apex: 'Kiilakulma',
+    iterations: 'iteraatioita',
+    passThrough:
+      'Prismamalli on kytketty pois: resepti välitetään kääntämättä. Vertailua varten, ei tilaamiseen.',
+    failed:
+      'Prisman käännös ei supennut, joten prisma-arvoa ei näytetä. Arvattu luku olisi vaarallisempi kuin puuttuva.',
   },
 
   decentration: {

@@ -11,7 +11,13 @@
  * virheilmoitukset on jo määritelty. Käyttöliittymä ei tee omaa optiikkavalidointia.
  */
 import { toPlusForm } from '../../optics/format.js';
-import { DEFAULTS, type LensPower, type OcrMethod, type SolveInput } from '../../optics/index.js';
+import {
+  DEFAULTS,
+  type LensPower,
+  type OcrMethod,
+  type PrismModel,
+  type SolveInput,
+} from '../../optics/index.js';
 import { D, deg, mm, normalizeAxis, pd } from '../../optics/units.js';
 import { findMaterial, MATERIALS } from './materials.js';
 
@@ -54,6 +60,7 @@ export interface FormState {
   readonly cra: string;
   readonly lab: LabForm;
   readonly ocrMethod: OcrMethod;
+  readonly prismModel: PrismModel;
   readonly baseCurveModel: boolean;
 }
 
@@ -96,6 +103,7 @@ export function createDefaultForm(): FormState {
       cylForm: DEFAULTS.labProfile.cylForm,
     },
     ocrMethod: DEFAULTS.flags.ocrMethod,
+    prismModel: DEFAULTS.flags.prismModel,
     baseCurveModel: DEFAULTS.flags.baseCurveModel,
   };
 }
@@ -236,6 +244,10 @@ export function buildSolveInput(form: FormState): SolveInput {
       prismStep: pd(parseDecimal(form.lab.prismStep)),
       cylForm: form.lab.cylForm,
     },
-    flags: { baseCurveModel: form.baseCurveModel, ocrMethod: form.ocrMethod },
+    flags: {
+      baseCurveModel: form.baseCurveModel,
+      ocrMethod: form.ocrMethod,
+      prismModel: form.prismModel,
+    },
   };
 }

@@ -36,10 +36,15 @@ import {
   type Residual,
 } from './ocr.js';
 import {
+  UNTILTED_FRAME,
   prenticePrism,
   prismSpecToVector,
   prismVectorToSpec,
+  solveWedgeForPrism,
   transverseChromaticAberration,
+  wedgeDeviation,
+  type LensFrame,
+  type PrismSpec,
   type PrismVector,
 } from './prism.js';
 import { bestGridRound, roundPrism, type RoundingResult } from './rounding.js';
@@ -111,6 +116,12 @@ export interface SolveFlags {
   /** Base curve -malli. Oletuksena EPÄTOSI (§3.3). */
   readonly baseCurveModel: boolean;
   readonly ocrMethod: OcrMethod;
+  /**
+   * `'wedgeSnell'` = reseptin prisma käännetään kallistetulle linssille kiilamallilla
+   * (§3.5, vaihe P2). `'passThrough'` = prisma välitetään sellaisenaan ja siitä
+   * varoitetaan; jätetty vertailua varten, ei tilaamista.
+   */
+  readonly prismModel: PrismModel;
 }
 
 export interface EyeInput {
@@ -136,6 +147,48 @@ export interface SolveInput {
 }
 
 // --- Tulos -------------------------------------------------------------------
+
+export type PrismModel = 'wedgeSnell' | 'passThrough';
+
+export interface PrismSpecOutput {
+  readonly magnitude: PrismDioptre;
+  readonly base: Degree;
+}
+
+/**
+ * Prisman käännös (§3.5).
+ *
+ * `prescribed` on TAVOITE silmällä. `ordered` on se, mitä linssitalolta tilataan:
+ * kiilan poikkeutus kallistamattomana eli focimetrissä mitattava nimellisprisma.
+ * `asWorn` on toteutuva silmällä, kun tilattu linssi on kallellaan kehyksessä.
+ *
+ * `status`:
+ *  - `'none'`         reseptissä ei ole prismaa
+ *  - `'compensated'`  käännös onnistui
+ *  - `'passThrough'`  malli on kytketty pois; prisma välitetään sellaisenaan
+ *  - `'failed'`       juurenhaku ei supennut -> lukua EI saa esittää prismana
+ */
+export interface PrismResult {
+  readonly status: 'none' | 'compensated' | 'passThrough' | 'failed';
+  readonly prescribed?: PrismSpecOutput;
+  readonly ordered?: PrismSpecOutput;
+  readonly orderedRounded?: PrismSpecOutput;
+  readonly asWorn?: PrismSpecOutput;
+  readonly asWornRounded?: PrismSpecOutput;
+  /** Mitä silmällä toteutuisi, jos reseptin prisma tilattaisiin sellaisenaan. */
+  readonly asWornUncompensated?: PrismSpecOutput;
+  /** |toteutuva − resepti|, pd. */
+  readonly residualPd?: number;
+  readonly residualRoundedPd?: number;
+  readonly residualUncompensatedPd?: number;
+  readonly apexAngleDeg?: Degree;
+  /** Kiilan kannan suunta linssitasossa, asteina. */
+  readonly wedgeBaseDeg?: Degree;
+  readonly iterations?: number;
+  readonly method?: string;
+  /** Poikittainen kromaattinen aberraatio P/ν. */
+  readonly tca?: PrismDioptre;
+}
 
 export interface InducedPrism {
   readonly magnitude: PrismDioptre;
@@ -182,6 +235,8 @@ export interface EyeResult {
     };
   };
   readonly compensationWorthwhile: boolean;
+  /** Prisman käännös (§3.5). `status: 'none'`, jos reseptissä ei ole prismaa. */
+  readonly prism: PrismResult;
   /** Null, jos kehysmitat puuttuvat. */
   readonly decentration: DecentrationOutput | null;
   readonly warnings: readonly Warning[];
@@ -279,6 +334,154 @@ function resolveGeometry(
   return {
     geometry: refined,
     decentration: computeDecentration(refined, box as FrameBox, monoPd, vertexWorn, cra),
+  };
+}
+
+/**
+ * Prisman käännös yhdelle silmälle (§3.5).
+ *
+ * Ketju on:
+ *   resepti (tavoite silmällä)
+ *     -> kiila, jonka poikkeutus KALLISTETUSSA kehyksessä on tavoite
+ *     -> saman kiilan poikkeutus KALLISTAMATTOMANA = tilattava nimellisprisma
+ *     -> pyöristys linssitalon askeleeseen
+ *     -> pyöristetystä nimellisarvosta takaisin kiilaksi ja eteenpäin kallistettuun
+ *        kehykseen = mitä pyöristetyllä tilauksella oikeasti toteutuu
+ *
+ * Vertailukohtana lasketaan myös, mitä toteutuisi, jos reseptin prisma tilattaisiin
+ * sellaisenaan ilman käännöstä. Se on prisman puolen "kompensoimaton" luku ja kertoo,
+ * paljonko käännös on tässä tapauksessa arvoinen.
+ */
+interface PrismOutcome {
+  readonly result: PrismResult;
+  readonly orderedExact?: PrismSpec;
+  readonly orderedRounded?: PrismSpec;
+  readonly asWornExact?: PrismSpec;
+  readonly asWornRounded?: PrismSpec;
+  readonly asWornUncompensated?: PrismSpec;
+}
+
+const toPrismSpecOutput = (spec: PrismSpec): PrismSpecOutput => ({
+  magnitude: pd(spec.magnitude),
+  base: deg(spec.base),
+});
+
+const prismVectorDistance = (a: PrismVector, b: PrismVector): number =>
+  Math.hypot(a.horizontal - b.horizontal, a.vertical - b.vertical);
+
+function resolvePrism(
+  input: SolveInput,
+  eye: Eye,
+  geometry: TiltGeometry,
+  rxPrism: PrismSpec | undefined,
+  trace: TraceBuilder,
+  warnings: Warning[],
+): PrismOutcome {
+  if (!rxPrism || !(rxPrism.magnitude > 0)) return { result: { status: 'none' } };
+
+  const prescribed = toPrismSpecOutput(rxPrism);
+  const step = input.labProfile.prismStep as number;
+  const index = input.material.index;
+  const target = prismSpecToVector(rxPrism);
+
+  if (input.flags.prismModel === 'passThrough') {
+    const rounded = roundPrism(rxPrism, step);
+    trace.text('prismModel', 'Prismamalli', 'passThrough (ei käännöstä)');
+    return {
+      result: {
+        status: 'passThrough',
+        prescribed,
+        ordered: prescribed,
+        orderedRounded: toPrismSpecOutput(rounded),
+      },
+      orderedExact: rxPrism,
+      orderedRounded: rounded,
+    };
+  }
+
+  const frame: LensFrame = { normal: geometry.normal, eh: geometry.eh, ev: geometry.ev };
+  const solution = solveWedgeForPrism(target, frame, index);
+  const nominal = solution.ok ? wedgeDeviation(solution.wedge, UNTILTED_FRAME, index) : null;
+
+  if (!solution.ok || !nominal) {
+    // Selkeä virhe, ei hiljainen huonoin arvaus (§3.5).
+    warnings.push({
+      code: 'prismSolveFailed',
+      severity: 'critical',
+      eye,
+      data: { residualPd: solution.residualPd, iterations: solution.iterations },
+    });
+    trace.text('prismSolve', 'Prisman käännös', 'ei supennut');
+    return {
+      result: {
+        status: 'failed',
+        prescribed,
+        residualPd: solution.residualPd,
+        iterations: solution.iterations,
+        method: solution.method,
+      },
+    };
+  }
+
+  const orderedExact = prismVectorToSpec(nominal);
+  const orderedRounded = roundPrism(orderedExact, step);
+
+  const asWornExactVector = wedgeDeviation(solution.wedge, frame, index);
+  const roundedWedge = solveWedgeForPrism(prismSpecToVector(orderedRounded), UNTILTED_FRAME, index);
+  const asWornRoundedVector = roundedWedge.ok
+    ? wedgeDeviation(roundedWedge.wedge, frame, index)
+    : null;
+
+  const uncompensatedWedge = solveWedgeForPrism(target, UNTILTED_FRAME, index);
+  const asWornUncompensatedVector = uncompensatedWedge.ok
+    ? wedgeDeviation(uncompensatedWedge.wedge, frame, index)
+    : null;
+
+  const asWornExact = asWornExactVector ? prismVectorToSpec(asWornExactVector) : undefined;
+  const asWornRounded = asWornRoundedVector ? prismVectorToSpec(asWornRoundedVector) : undefined;
+  const asWornUncompensated = asWornUncompensatedVector
+    ? prismVectorToSpec(asWornUncompensatedVector)
+    : undefined;
+
+  trace.scalar('prismPrescribed', 'Reseptin prisma (tavoite silmällä)', rxPrism.magnitude, 'pd');
+  trace.scalar('prismPrescribedBase', 'Reseptin kantasuunta', rxPrism.base, 'deg');
+  trace.scalar('wedgeApex', 'Kiilakulma', solution.apexAngleDeg, 'deg');
+  trace.scalar('wedgeBase', 'Kiilan kanta linssitasossa', solution.baseDeg, 'deg');
+  trace.scalar('prismOrdered', 'Tilattava nimellisprisma', orderedExact.magnitude, 'pd');
+  trace.scalar('prismOrderedBase', 'Tilattava kantasuunta', orderedExact.base, 'deg');
+  trace.scalar('prismIterations', 'Juurenhaun iteraatiot', solution.iterations, 'count');
+  trace.scalar('prismResidual', 'Juurenhaun jäännös', solution.residualPd, 'pd');
+  trace.text('prismMethod', 'Juurenhaun menetelmä', solution.method);
+
+  return {
+    result: {
+      status: 'compensated',
+      prescribed,
+      ordered: toPrismSpecOutput(orderedExact),
+      orderedRounded: toPrismSpecOutput(orderedRounded),
+      ...(asWornExact ? { asWorn: toPrismSpecOutput(asWornExact) } : {}),
+      ...(asWornRounded ? { asWornRounded: toPrismSpecOutput(asWornRounded) } : {}),
+      ...(asWornUncompensated
+        ? { asWornUncompensated: toPrismSpecOutput(asWornUncompensated) }
+        : {}),
+      residualPd: solution.residualPd,
+      ...(asWornRoundedVector
+        ? { residualRoundedPd: prismVectorDistance(asWornRoundedVector, target) }
+        : {}),
+      ...(asWornUncompensatedVector
+        ? { residualUncompensatedPd: prismVectorDistance(asWornUncompensatedVector, target) }
+        : {}),
+      apexAngleDeg: deg(solution.apexAngleDeg),
+      wedgeBaseDeg: deg(solution.baseDeg),
+      iterations: solution.iterations,
+      method: solution.method,
+      tca: pd(transverseChromaticAberration(rxPrism.magnitude, input.material.abbe)),
+    },
+    orderedExact,
+    orderedRounded,
+    ...(asWornExact ? { asWornExact } : {}),
+    ...(asWornRounded ? { asWornRounded } : {}),
+    ...(asWornUncompensated ? { asWornUncompensated } : {}),
   };
 }
 
@@ -465,11 +668,18 @@ function solveEye(
     );
   }
 
-  // 11. Prisma: P0 välittää reseptin prisman sellaisenaan (käännös vaiheessa P2).
+  // 11. Prisma (§3.5): reseptin prisma on TAVOITE silmällä. Tilattava on se kiila,
+  //     joka kallistetussa kehyksessä tuottaa juuri sen — ja tilausrivillä se
+  //     ilmoitetaan kallistamattoman linssin poikkeutuksena, koska juuri sen
+  //     linssitalo mittaa focimetrillä.
   const rxPrism = eyeInput.rx.prism
     ? { magnitude: eyeInput.rx.prism.magnitude as number, base: eyeInput.rx.prism.base as number }
     : undefined;
-  const roundedPrism = rxPrism ? roundPrism(rxPrism, input.labProfile.prismStep as number) : undefined;
+
+  const prismOutcome = resolvePrism(input, eye, geometry, rxPrism, trace, warnings);
+  const orderedPrism = prismOutcome.orderedExact;
+  const roundedPrism = prismOutcome.orderedRounded;
+
   if (rxPrism && rxPrism.magnitude > 0) {
     const tca = transverseChromaticAberration(rxPrism.magnitude, input.material.abbe);
     trace.scalar('tca', 'Poikittainen kromaattinen aberraatio P/ν', tca, 'pd');
@@ -485,13 +695,16 @@ function solveEye(
 
   const result: EyeResult = {
     eye,
-    exact: toLensPower(exactPower, rxPrism),
+    exact: toLensPower(exactPower, orderedPrism),
     rounded025: toLensPower(rounding.power, roundedPrism),
     naiveRounded025: toLensPower(rounding.naive, roundedPrism),
     asWorn: {
-      exact: toLensPower(spheroCylFromMatrix(asWornExact)),
-      rounded: toLensPower(spheroCylFromMatrix(asWornRounded)),
-      uncompensated: toLensPower(spheroCylFromMatrix(asWornUncompensated)),
+      exact: toLensPower(spheroCylFromMatrix(asWornExact), prismOutcome.asWornExact),
+      rounded: toLensPower(spheroCylFromMatrix(asWornRounded), prismOutcome.asWornRounded),
+      uncompensated: toLensPower(
+        spheroCylFromMatrix(asWornUncompensated),
+        prismOutcome.asWornUncompensated,
+      ),
     },
     residual: {
       exact: residualExact,
@@ -507,6 +720,7 @@ function solveEye(
       },
     },
     compensationWorthwhile,
+    prism: prismOutcome.result,
     decentration: decentrationOutput,
     warnings,
     trace: trace.build(),
@@ -569,7 +783,11 @@ export const DEFAULTS = {
     prismStep: pd(0.25),
     cylForm: 'minus' as const,
   },
-  flags: { baseCurveModel: false, ocrMethod: 'exact' as const },
+  flags: {
+    baseCurveModel: false,
+    ocrMethod: 'exact' as const,
+    prismModel: 'wedgeSnell' as const,
+  },
 } as const;
 
 /** Dioptrinen etäisyys kahden voimakkuuden välillä — käyttöliittymän apuri. */

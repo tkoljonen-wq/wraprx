@@ -7,9 +7,9 @@ korjaus, kun linssi on kehyksessä kallellaan (wrap + pantoskooppinen kaltevuus)
 Tavallinen laskuri kertoo, mitä käyttäjä saa. Tämä kertoo, mitä pitää tilata — ja
 tarkistaa itsensä ajamalla tuloksen takaisin eteenpäin-mallin läpi.
 
-**Tila: vaiheet P0 ja P1 valmiit** — laskentaydin, testit ja käyttöliittymä (yksiteho,
-molemmat silmät, kaksi tuloskorttia, desentraatio ja laskentajälki). Seuraava on P2:
-prismakäännös.
+**Tila: vaiheet P0, P1 ja P2 valmiit** — laskentaydin, testit, käyttöliittymä ja
+prisman käännös. Seuraava on P3: presetit, tulostettava tilauslomake, PWA/offline ja
+URL-jakaminen.
 
 - **Sovellus:** https://tkoljonen-wq.github.io/wraprx/
 - Suunnitelma: [docs/PLAN.md](docs/PLAN.md)
@@ -26,6 +26,7 @@ Resepti (refraktion pintavälillä)
   → linssitason geometria (τ, μ)
   → OCR-käännös: haluttu käytössä → tilattava nimellisvoimakkuus
   → desentraatio ja OC-korkeus kierretyssä linssitasossa
+  → prisman käännös: kiila + exakti Snell, tilattava = poikkeutus kallistamattomana
   → kaksi tulostarkkuutta: tarkka (0,01 D) ja 0,25 D
   → takaisinlaskenta molemmille: residuaali, toleranssiverdikti, hyötyarvio
 ```
@@ -41,8 +42,8 @@ varmuuden tunnetta.
   freeform-pintalaskentaan; keskiövoimakkuuden korjaaminen ei riitä eikä ole oikea kohta.
 - **Ei perifeeristä optimointia eikä freeform-pintalaskentaa.** Isoilla kulmilla
   keskiövoimakkuuden kompensointi on välttämätön mutta ei riittävä, ja ohjelma sanoo sen.
-- **Ei prismakäännöstä (vielä).** Reseptin prisma välitetään sellaisenaan ja siitä
-  varoitetaan. Täysi Snell-malli on vaihe P2.
+- **Ei perspektiiviä muuhun kuin suoraan eteen katsomiseen.** Sekä voimakkuus- että
+  prismalaskenta olettaa vaakasuoran katselinjan. Sivukatseen optiikka on eri tehtävä.
 - **Ei ISO-toleranssiverdiktiä ennen kuin taulukot on syötetty lähteestä.** Ilman dataa
   verdikti on "ei arvioitu" — ei arvattua lukua.
 
@@ -70,7 +71,7 @@ joten tulos on jäljitettävissä tiettyyn koodiversioon.
 
 ```bash
 npm install
-npm test            # 94 testiä: rajatesti, referenssi, ominaisuus, konsistenssi, jälki, lomake
+npm test            # 114 testiä: rajatesti, referenssi, ominaisuus, konsistenssi, jälki, prisma, lomake
 npm run typecheck
 npm run demo        # tulostaa referenssitapauksen tuloksen ja laskentajäljen
 npm run validate:lab
@@ -99,4 +100,5 @@ validointiportti kertoo mikä on pielessä.
 | `property.test.ts` | Invariantit: peilisymmetria, τ=0, monotonisuus, pyöristys, notaatiot |
 | `trace.test.ts` | Laskentajäljen snapshot — hiljainen muutos välivaiheessa huomataan |
 | `tolerance.test.ts` | Tyhjä, osittainen ja täysi toleranssidata; vyöhykelogiikka |
+| `prism.test.ts` | Kiilamalli ja käännös: käsin johdettu Snell, juurenhaku, etumerkit |
 | `ui-model.test.ts` | Lomakkeen syöttöpolku: pilkku, miinusmuoto, kenttien kytkentä |

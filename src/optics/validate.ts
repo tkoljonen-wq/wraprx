@@ -14,8 +14,10 @@ export type WarningSeverity = 'info' | 'warning' | 'critical';
 export type WarningCode =
   /** Linssitalo kompensoi itse: näitä arvoja EI saa tilata. */
   | 'labCompensatesInternally'
-  /** Reseptissä on prisma, jota P0 ei käännä (ks. §3.5, P2). */
+  /** Prismamalli on kytketty pois: prisma välitetään kääntämättä (ks. §3.5). */
   | 'prismNotCompensated'
+  /** Prisman käännöksen juurenhaku ei supennut -> tulosta ei saa esittää prismana. */
+  | 'prismSolveFailed'
   /** Kulmat ovat nimellisiä (kehysvalmistajan spec), ei kasvoilta mitattuja. */
   | 'anglesNotMeasured'
   /** Kehysmitat puuttuvat -> desentraatiota ja OC-korkeutta ei laskettu. */
@@ -174,7 +176,9 @@ export function validateInput(input: SolveInput): ValidationOutcome {
         value: magnitude,
       });
       check(finite(base), { code: 'prismInvalid', field: `${path}.rx.prism.base`, value: base });
-      if (magnitude > 0) {
+      // Varoitus koskee vain tilannetta, jossa käännös on kytketty pois. P2:n
+      // kiilamalli kääntää prisman, eikä silloin ole mistä varoittaa.
+      if (magnitude > 0 && input.flags.prismModel === 'passThrough') {
         warnings.push({ code: 'prismNotCompensated', severity: 'warning', eye });
       }
     }

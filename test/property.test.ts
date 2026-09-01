@@ -83,7 +83,11 @@ function baseInput(overrides: {
       prismStep: pd(0.25),
       cylForm: 'minus',
     },
-    flags: { baseCurveModel: overrides.baseCurveModel ?? false, ocrMethod: 'exact' },
+    flags: {
+      baseCurveModel: overrides.baseCurveModel ?? false,
+      ocrMethod: 'exact',
+      prismModel: 'wedgeSnell',
+    },
   };
 }
 

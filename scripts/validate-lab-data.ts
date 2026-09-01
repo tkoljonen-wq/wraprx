@@ -128,7 +128,7 @@ function buildInput(row: Row, hypothesis: Hypothesis): { input: SolveInput; eye:
         prismStep: pd(0.25),
         cylForm: 'minus',
       },
-      flags: { baseCurveModel: false, ocrMethod: hypothesis.ocrMethod },
+      flags: { baseCurveModel: false, ocrMethod: hypothesis.ocrMethod, prismModel: 'wedgeSnell' },
     },
   };
 }

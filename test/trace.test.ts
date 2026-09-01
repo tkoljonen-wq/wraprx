@@ -37,7 +37,7 @@ const input: SolveInput = {
     prismStep: pd(0.25),
     cylForm: 'minus',
   },
-  flags: { baseCurveModel: false, ocrMethod: 'exact' },
+  flags: { baseCurveModel: false, ocrMethod: 'exact', prismModel: 'wedgeSnell' },
 };
 
 describe('laskentajälki', () => {

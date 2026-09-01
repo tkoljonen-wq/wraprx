@@ -478,6 +478,16 @@ summary:focus-visible {
   display: block;
 }
 
+.prism-failed {
+  margin: 0;
+  padding: 8px 10px;
+  font-size: 14px;
+  color: var(--danger);
+  background: var(--panel);
+  border-left: 3px solid var(--danger);
+  border-radius: 0 8px 8px 0;
+}
+
 .mono {
   font-family: ui-monospace, 'Cascadia Mono', Consolas, monospace;
   font-variant-numeric: tabular-nums;

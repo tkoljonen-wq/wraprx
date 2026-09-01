@@ -156,7 +156,7 @@ describe('solve toleranssidatan kanssa', () => {
       prismStep: pd(0.25),
       cylForm: 'minus',
     },
-    flags: { baseCurveModel: false, ocrMethod: 'exact' },
+    flags: { baseCurveModel: false, ocrMethod: 'exact', prismModel: 'wedgeSnell' },
     ...(toleranceData ? { toleranceData } : {}),
   });
 

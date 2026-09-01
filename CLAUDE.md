@@ -29,16 +29,19 @@ tilata, jotta kallellaan oleva linssi tuottaa halutun korjauksen käyttäjän si
 |---|---|---|
 | P0 | Laskentaydin, testit, rajatesti, CI, valmistajadatan ajopolku | **valmis** |
 | P1 | `src/ui/` (Preact): yksiteho, molemmat silmät, kaksi tuloskorttia | **valmis** |
-| P2 | `prism.ts` täydellä Snell-mallilla ja prismakäännöksellä | seuraava |
-| P3 | Presetit, tilauslomake, PWA/offline, URL-jakaminen, i18n | ei aloitettu |
+| P2 | `prism.ts` täydellä Snell-mallilla ja prismakäännöksellä | **valmis** |
+| P3 | Presetit, tilauslomake, PWA/offline, URL-jakaminen, i18n | seuraava |
 | P4 | ISO-toleranssit lähteestä, base curve -lippu, valmistajadata | ei aloitettu |
 
-`prism.ts` sisältää P0:ssa vain Prentice-prisman, kantasuuntamuunnokset ja TCA:n.
-Reseptin prisma välitetään sellaisenaan ja varoitus `prismNotCompensated` kertoo sen.
+`prism.ts` sisältää nyt myös kiilamallin: exakti vektori-Snell kahdella pinnalla ja
+poikkeutuksen käännös vaimennetulla Newtonilla. **Reseptin prisma on tavoite silmällä;
+tilattava on kiilan poikkeutus kallistamattomana** eli focimetrissä mitattava
+nimellisprisma (docs/OPEN-QUESTIONS.md kohta 11.1). Käännöksen saa kytkeä pois lipulla
+`prismModel: 'passThrough'`, jolloin `prismNotCompensated` varoittaa.
 
-### P0:n ja P1:n valmistumistila
+### P0:n, P1:n ja P2:n valmistumistila
 
-`npm run typecheck`, `npm test` (94 testiä, 7 tiedostoa) ja `npm run build` menevät läpi.
+`npm run typecheck`, `npm test` (114 testiä, 8 tiedostoa) ja `npm run build` menevät läpi.
 Kaikki §9.3:n P0-kriteerit on katettu testillä. Rajatesti on koeteltu tarkoituksellisella
 rikkomuksella (`window` + ulkopuolinen import ytimeen) ja se kaatui kuten pitää.
 
@@ -48,6 +51,14 @@ laskentanappia. `test/ui-model.test.ts` ajaa referenssitapauksen **lomakkeen kau
 joten desimaalipilkku, miinusmuodon transpositio ja kenttien kytkentä ovat testattuja
 ilman DOM:ia. Ulkoasu on tarkistettu 375 px:n leveydellä: ei vaakavieritystä,
 kosketuskohteet ≥ 44 px.
+
+P2: prisman käännös on kiilamalli + exakti vektori-Snell + vaimennettu Newton.
+Kiilan poikkeutus on tarkistettu **käsin johdettua skalaarista prismakaavaa** vasten
+kahdessa geometriassa (derivations.md tapaukset 8 ja 9); ero on alle 4e-5 pd. Molemmat
+johdot ovat eri muotoilu kuin koodin vektori-Snell, joten yhtäpitävyys on todellinen
+tarkistus. Kallistettu tapaus 9 paljasti kaksi asiaa: käsinlaskun etumerkkivirheen
+(kirjattu johtoon) ja aidon robustisuusvian, jossa juurenhaku vaelsi 253°:n kiilaan —
+siitä syntyi mallin määrittelyalue (kiilakulma < 90°).
 
 Referenssitapaus §5.3 on johdettu käsin koodista riippumatta
 ([test/cases/derivations.md](test/cases/derivations.md)) ja johto vahvisti suunnitelman
@@ -62,14 +73,15 @@ Johto vahvisti myös etumerkkivalinnan `betaDeg < 0` OD:lle.
    Sama kohta sisältää yhä **tilauskäytännön kysymyksen**: tekeekö linssitalo
    panto-pudotuksen itse annetusta korkeudesta? Se on varmistettava linssitalolta ennen
    ensimmäistä oikeaa tilausta ja se kuuluu P3:n tilauslomakkeen saatetekstiin.
-2. **P2 seuraavaksi:** `prism.ts` täydellä Snell-mallilla ja prismakäännöksellä. P1:n
-   käyttöliittymässä on jo prismakentät ja varoitus `prismNotCompensated`, joten P2
-   näkyy suoraan tuloskorteissa ilman uutta kytkentätyötä.
-3. **Git on käytössä 1.9.2026 alkaen.** Haara `main`, ensimmäinen commit sisältää P0:n
-   ja P1:n. Etäpalvelinta ei ole vielä lisätty, joten CI ja Pages-julkaisu eivät ole
-   vielä ajaneet kertaakaan — ne käynnistyvät, kun repo työnnetään GitHubiin.
-   `.gitattributes` pakottaa LF:n, jotta Ubuntu-CI ja Windows-työasema eivät tuota
-   eroavia diffejä.
+2. **P3 seuraavaksi:** presetit, tulostettava tilauslomake, PWA/offline, URL-jakaminen
+   ja i18n. Tilauslomakkeen saatetekstiin kuuluu kaksi linssitalolta varmistettavaa
+   asiaa: panto-pudotus (kohta 1) ja prisman mittausasento (kohta 11.1). URL-jaossa
+   pätee §4:n sääntö: vapaa viitekenttä EI serialisoidu linkkiin — siksi kenttää ei ole
+   vielä lisätty lainkaan.
+3. **Julkaistu 1.9.2026.** Julkinen repo `github.com/tkoljonen-wq/wraprx`, haara `main`.
+   CI ja GitHub Pages ajavat joka pushilla; sovellus on osoitteessa
+   `https://tkoljonen-wq.github.io/wraprx/`. `.gitattributes` pakottaa LF:n, jotta
+   Ubuntu-CI ja Windows-työasema eivät tuota eroavia diffejä.
 4. **Ei kiireellistä velkaa.** Suunnitelma on repossa kahdesti: alkuperäinen
    `wrap-rx-suunnitelma-v0.5.md` juuressa ja kopio `docs/PLAN.md`. Juuren kopio voi
    poistua, kun se ei enää tunnu tarpeelliselta.
@@ -83,7 +95,7 @@ src/ui/       App.tsx, components/, views/, state/ (model.ts puhdas, store.ts si
               flags.ts, i18n/fi.ts, styles.css
 src/main.tsx  käynnistys
 data/         materials.json (lähde per rivi), tolerances.json (tyhjä)
-test/         boundary, reference, property, consistency, trace, ui-model + cases/
+test/         boundary, reference, property, consistency, trace, prism, ui-model + cases/
 scripts/      demo.ts, validate-lab-data.ts
 docs/         PLAN.md, OPEN-QUESTIONS.md
 ```

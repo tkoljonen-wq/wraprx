@@ -51,7 +51,7 @@ function EyeFields({ eye }: { readonly eye: EyeKey }) {
         />
       </div>
       <details class="sub">
-        <summary>{fi.fields.prismMagnitude}</summary>
+        <summary>{fi.prism.title}</summary>
         <p class="field-hint">{fi.fields.prismHint}</p>
         <div class="grid-2">
           <NumberField
@@ -220,7 +220,7 @@ export function InputPanel() {
         />
       </section>
 
-      {FLAGS.allowMartinApproximation || FLAGS.baseCurveModel ? (
+      {FLAGS.allowMartinApproximation || FLAGS.allowPrismPassThrough || FLAGS.baseCurveModel ? (
         <section class="panel">
           <h2>{fi.sections.method}</h2>
           {FLAGS.allowMartinApproximation ? (
@@ -232,6 +232,18 @@ export function InputPanel() {
                 { value: 'martin', label: fi.fields.ocrMartin },
               ]}
               onValue={(value) => setField('ocrMethod', value)}
+            />
+          ) : null}
+          {FLAGS.allowPrismPassThrough ? (
+            <SegmentedField
+              label={fi.fields.prismModel}
+              value={state.prismModel}
+              options={[
+                { value: 'wedgeSnell', label: fi.fields.prismWedge },
+                { value: 'passThrough', label: fi.fields.prismPassThrough },
+              ]}
+              onValue={(value) => setField('prismModel', value)}
+              hint={fi.fields.prismModelHint}
             />
           ) : null}
           {FLAGS.baseCurveModel ? (

@@ -103,7 +103,7 @@ function buildInput(definition: CaseDefinition): SolveInput {
       prismStep: pd(0.25),
       cylForm: 'minus',
     },
-    flags: { baseCurveModel: false, ocrMethod: input.ocrMethod },
+    flags: { baseCurveModel: false, ocrMethod: input.ocrMethod, prismModel: 'wedgeSnell' },
   };
 }
 

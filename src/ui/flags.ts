@@ -14,15 +14,18 @@ export interface UiFlags {
   readonly baseCurveModel: boolean;
   /** Martinin sarjakehitelmän saa valita vertailua varten (ei tilaukseen). */
   readonly allowMartinApproximation: boolean;
+  /** Prisman käännöksen saa kytkeä pois vertailua varten (ei tilaukseen). */
+  readonly allowPrismPassThrough: boolean;
   /** Välitulospaneeli ja laskentajälki näkyvissä. */
   readonly showTrace: boolean;
-  /** Desentraatio- ja OC-korkeuspaneeli. Täysi prismalaskenta on P2. */
+  /** Desentraatio- ja OC-korkeuspaneeli. */
   readonly showDecentration: boolean;
 }
 
 export const FLAGS: UiFlags = {
   baseCurveModel: false,
   allowMartinApproximation: true,
+  allowPrismPassThrough: true,
   showTrace: true,
   showDecentration: true,
 };
