@@ -189,7 +189,7 @@ resepti (tavoite silmällä)
 mittaako talo prisman focimetrillä linssi suorassa (oletus tässä) vai ilmoittaako se
 prisman jossakin muussa asennossa? Jos jälkimmäinen, muutos osuu tähän yhteen kohtaan.
 
-### 11.2 Kiilan parametrisointi ja nollan lähistö
+### 11.2 Kiilan parametrisointi ja nollan lähistö — RATKAISTU 18.10.2026 ✅
 
 Suunnitelma määrää 2D-juurenhaun napakoordinaateissa (kiilakulma, kantasuunta) ja
 erikoistapauksen |P| < 0,05 pd, koska *"nollaprisman lähellä jakobiaani on lähes
@@ -208,7 +208,14 @@ ei sovellu tähän malliin: kiilamallissa tasopaksu levy (kiilakulma 0) ei poikk
 sädettä millään kallistuksella, joten kallistus ei sinänsä indusoi prismaa. Nolla-
 tavoite antaa nollakiilan. Kallistuksen vaikutus näkyy siinä, että sama kiila
 poikkeuttaa kallellaan eri määrän kuin suorassa — ei siinä, että kallistus tuottaisi
-prismaa tyhjästä. **Jos tämä lause tarkoitti jotain muuta, kysy.**
+prismaa tyhjästä.
+
+**Päätös 18.10.2026:** käyttäjä (optikko) vahvisti tulkinnan, että suunnitelman lause oli
+epätarkka ja nollatavoite = nollaprisma tilaukseen. Perustelu tilaustermein: kriteerin
+(A) mukaan OC on katselinjan lävistyspisteessä, jossa pinnat ovat yhdensuuntaiset;
+kallistus siirtää sädettä mutta ei käännä sitä. Vaihtoehto — desentraation
+Prentice-prisman kompensointi tilanteessa, jossa OC jää katselinjan ohi — hylättiin
+tarpeettomana. Mallia ei muuteta.
 
 Alkuarvaus on lineaarinen askel nollasta (J(0)⁻¹·tavoite) eikä suunnitelman karkea
 ruudukkohaku; ruudukko on jäljellä varasuunnitelmana, jos Newton ei suppene

@@ -67,15 +67,10 @@ Johto vahvisti myös etumerkkivalinnan `betaDeg < 0` OD:lle.
 
 ## Mistä jatketaan
 
-0. **ODOTTAA KÄYTTÄJÄN VASTAUSTA: §3.5:n nollaprismalause.** Suunnitelma sanoo
-   nollaprisman erikoistapauksesta *"tilattava prisma = kallistuksen indusoiman prisman
-   vastaluku"*. Lause ei sovi kiilamalliin: tasopaksu levy ei poikkeuta sädettä millään
-   kallistuksella, joten kallistus ei indusoi prismaa tyhjästä, ja nollatavoite antaa
-   nollakiilan. Toteutettuna on yksi lineaarinen askel ilman iteraatiota, mikä hoitaa
-   saman aikomuksen (singulariteetin välttämisen). Kysymys esitettiin käyttäjälle
-   1.9.2026, vastausta ei vielä ole. **Älä muuta mallia arvaamalla** — jos lause
-   tarkoitti esimerkiksi desentraation Prentice-prismaa, muutos on eri.
-   Ks. [docs/OPEN-QUESTIONS.md](docs/OPEN-QUESTIONS.md) kohta 11.2.
+0. **§3.5:n nollaprismalause on ratkaistu 18.10.2026:** nollatavoite = nollaprisma.
+   Kallistus ei indusoi prismaa OC:n kohdalla (kriteeri A), joten mitään ei kumota.
+   Käyttäjä hylkäsi desentraation Prentice-prisman kompensoinnin tarpeettomana.
+   Mallia ei muuteta. Ks. [docs/OPEN-QUESTIONS.md](docs/OPEN-QUESTIONS.md) kohta 11.2.
 
 1. **OC-korkeuden kriteeri on päätetty 1.9.2026:** (A) katselinjan lävistyspiste.
    Käyttäjä vahvisti kannan. `decentration`-funktiota ei muuteta; (B) ja nyrkkisääntö

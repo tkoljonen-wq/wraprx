@@ -153,7 +153,7 @@ Approksimaatiot eivät kelpaa, koska prisman käyttäytyminen riippuu kallistuks
 - Exakti vektorimuotoinen Snell kahdella pinnalla, tulossuunta (0,0,−1).
 - Poikkeutus puretaan vaaka- ja pystykomponenteiksi prismadioptrioina.
 - **Käännös:** etsitään kiilakulma ja kanta-suunta, joilla kallistetun linssin poikkeutus vastaa haluttua. 2D-juurenhaku: Newton numeerisella jakobiaanilla ja askelpituuden puolituksella (vaimennettu Newton — bisektio ei yleisty kahteen ulottuvuuteen), alkuarvaus karkeasta ruudukkohausta. Toleranssi 0,001 pd, iteraatiokatto ja epäonnistumisesta selkeä virhe, ei hiljainen huonoin arvaus.
-- Nollaprisman lähellä jakobiaani on lähes singulaarinen: |P| < 0,05 pd käsitellään erikoistapauksena ilman iteraatiota (tilattava prisma = kallistuksen indusoiman prisman vastaluku).
+- Nollaprisman lähellä jakobiaani on lähes singulaarinen: |P| < 0,05 pd käsitellään erikoistapauksena ilman iteraatiota (tilattava prisma = kallistuksen indusoiman prisman vastaluku). *Tarkennus 18.10.2026: kiilamallissa kallistus ei indusoi prismaa OC:n kohdalla, joten nollatavoite antaa nollaprisman; ks. OPEN-QUESTIONS 11.2.*
 
 Erikseen: Prentice-prisma desentraatiosta kompensoidulla voimakkuudella, silmien välinen pystyero (varoituskynnys 1,0 pd), TCA = P/ν.
 
