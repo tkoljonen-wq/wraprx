@@ -84,13 +84,15 @@ linssitasolle ja silmälle) kuuluu samaan luokkaan kuin base curve -malli: se on
 kysymys, ja sen kokoluokka on syytä mitata valmistajadataa vasten ennen kuin sitä
 muutetaan.
 
-**Havainto 18.10.2026 (kohta 9):** OptiCampus poikkeaa WrapRx:stä juuri tässä
-tilanteessa, eli yhdistetyssä panto + wrap -kallistuksessa reseptin sylinterin ollessa
-vino. Kun reseptin akselia kokeiltiin kiertää koko kiertokulman `atan(tan β · sin θ)`
-verran, tulos meni OptiCampuksen ohi vastakkaiselle puolelle. OptiCampuksen akseli on
-suunnilleen puolivälissä, eli kumpikaan yksinkertainen tulkinta ei selitä sitä. Kumpi on
-oikein, ei selviä vertailusta: OptiCampus on likiarvo, ja WrapRx:n rajaus on tietoinen.
-Oikea korjaus vaatii linssitason kannan johdon käsin ennen kuin koodia muutetaan.
+**RATKAISTU JOHDOLLA 18.10.2026, KOODI EI VIELÄ MUUTETTU.** Johto ja säteenjuoksu ovat
+tiedostossa `test/cases/derivations.md`, tapaus 10. Tulos: linssin tangentiaalimeridiaani
+omassa kannassaan on μ_L = atan2(sin β·cos θ, sin θ) − 90°, kun silmän frontaalitasossa
+se on μ_F = atan2(sin β, cos β·sin θ) − 90°. 18°/15°:lla ero on 2,39° (ei 4,7°, joka oli
+datumlinjan projektiokulma). Oikea tilaus on nykyinen tilaus kierrettynä Δ = μ_L − μ_F:n
+verran; voimakkuudet eivät muutu. Riippumaton 3D-säteenjuoksu täsmää uuteen malliin
+0,001 D:n tarkkuudella, ja nykyinen malli jättää silmälle jopa 0,1–0,2 D:n virheen
+yhdistetyllä kallistuksella. Koodimuutos odottaa käyttäjän lupaa. Muutos muuttaa myös
+referenssitapauksen 1 akseleita, joten tapaus on johdettava uudelleen käsin.
 
 ---
 
@@ -180,7 +182,10 @@ likiarvoksi.
    ks. sieltä.
 
 Johtopäätös: perusmalli (kertoimet, kallistusten yhdistäminen, etumerkit) on sama.
-Ainoa kliinisesti merkittävä ero on kohdan 3 kysymys.
+Ainoa kliinisesti merkittävä ero on kohdan 3 kysymys. Johto (derivations.md tapaus 10)
+osoitti, että **kumpikaan ei ole oikein yhdistetyssä kallistuksessa**: oikea tilausakseli
+on nykyisestä 2,4° (18°/15°) toiseen suuntaan kuin OptiCampus. Säteenjuoksulla
+OptiCampuksen tilauksen jäännösvirhe on noin kaksinkertainen WrapRx:n nykyiseen nähden.
 
 Valmistajan kompensoitua dataa ei ole. `npm run validate:lab` on valmis ottamaan sen
 vastaan, ja se raportoi suoraan, tulkitseeko valmistaja wrapin per linssi vai

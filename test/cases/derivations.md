@@ -405,3 +405,130 @@ ja antoi 5,1715 pd. Testi kaatui, ja tarkistus osoitti johdon vääräksi, ei ko
 Virhe on kirjattu tähän, koska se on juuri se virhe, jonka tämä geometria houkuttelee
 tekemään: kallistus on suurempi kuin kiilakulma, jolloin sisäinen säde kulkee
 takapinnan normaalin toisella puolella ja etumerkki kääntyy.
+
+---
+
+## Tapaus 10 — linssitason kanta yhdistetyssä kallistuksessa (18.10.2026)
+
+**Kysymys** (OPEN-QUESTIONS kohta 3): `ocr.ts` kiertää reseptin tangentiaali–
+sagittaalikantaan samalla kulmalla μ sekä silmän frontaalitasossa että linssin omassa
+tasossa. Tilauksen akseli luetaan kuitenkin linssin omasta 180-linjasta ê_h (kehyksen
+datumlinja), ja linssin tangentiaalimeridiaani on oma kulmansa siinä kannassa. Onko
+ero todellinen ja kuinka suuri?
+
+**Geometria** (`geometry.ts`, ei muutettu): ê_h = (cos β, sin β·sin θ, −sin β·cos θ),
+ê_v = (0, cos θ, sin θ), n̂ = (sin β, −cos β·sin θ, cos β·cos θ).
+
+Sagittaalisuunta on kohtisuorassa sekä katselinjaa ẑ että normaalia n̂ vastaan, joten
+se on **sama 3D-vektori kummassakin tasossa**:
+
+```
+ŝ = ẑ × n̂ = (−n_y, n_x, 0) = (cos β·sin θ, sin β, 0)
+```
+
+Sen komponentit:
+
+```
+frontaalikannassa (x̂, ŷ):   (cos β·sin θ,  sin β)
+linssin kannassa (ê_h, ê_v): ŝ·ê_h = cos²β·sin θ + sin²β·sin θ = sin θ
+                             ŝ·ê_v = sin β·cos θ
+```
+
+Tangentiaalimeridiaani on 90° sagittaalisesta:
+
+```
+μ_F = atan2(sin β, cos β·sin θ) − 90°        (silmän frontaalitaso; = koodin μ)
+μ_L = atan2(sin β·cos θ, sin θ) − 90°        (linssin oma taso)
+```
+
+Erikoistapaukset: pelkkä panto (β = 0) → molemmat 0 − 90 ≡ 90°. Pelkkä wrap (θ = 0) →
+molemmat ±90 − 90. **Ero syntyy vain, kun molemmat kulmat ovat nollasta poikkeavia.**
+Tämä selittää, miksi kaikki yksittäisen kallistuksen tapaukset täsmäsivät
+OptiCampuksen kanssa.
+
+### Numerot, OD, wrap 15°, panto 18° (β = −15°, θ = 18°)
+
+```
+sin β = −0,25881905   cos β = 0,96592583
+sin θ =  0,30901699   cos θ = 0,95105652
+
+frontaali: atan2(−0,25881905, 0,96592583·0,30901699 = 0,29848749) = −40,9293°
+           μ_F = −130,9293° ≡ 49,0707°        (koodin μ = 49,0715 ✓)
+linssi:    atan2(−0,25881905·0,95105652 = −0,24615154, 0,30901699) = −38,5427°
+           μ_L = −128,5427° ≡ 51,4573°
+
+Δ = μ_L − μ_F = +2,387°   (OS: −2,387°, peilikuva)
+```
+
+(OPEN-QUESTIONS kohdan 3 aiempi arvio 4,7° oli datumlinjan ê_h oma projektiokulma
+atan(tan β·sin θ). Tangentiaalimeridiaanin ero on eri suure, ja se on 2,39°.)
+
+### Oikea käännös
+
+Silmällä toteutuva voimakkuus F lasketaan frontaalikannassa, tilattava linssi P_L
+linssin kannassa. Kerroinjako (k_tan, k_sag, k_risti) tehdään tangentiaali–
+sagittaalikannassa, joka on fyysisesti sama molemmissa tasoissa. Siis:
+
+```
+eteenpäin:  F   = R(μ_F) · K∘[R(μ_L)ᵀ · P_L · R(μ_L)] · R(μ_F)ᵀ
+käännös:    P_L = R(μ_L) · K⁻¹∘[R(μ_F)ᵀ · F · R(μ_F)] · R(μ_L)ᵀ
+```
+
+Nykyinen koodi käyttää μ_F:ää molemmissa. Koska K⁻¹∘[…] on sama, **oikea tilaus on
+nykyinen tilaus kierrettynä Δ:n verran**: voimakkuudet eivät muutu, vain akseli.
+
+### Käsin: −10,00 DS, OD, 18°/15°, n = 1,5
+
+```
+cos τ = cos β·cos θ = 0,96592583·0,95105652 = 0,91865005   τ = 23,2705°
+sin τ = √(1 − 0,84391790) = 0,39507228
+sin τ' = 0,39507228/1,5 = 0,26338152    cos τ' = √(1 − 0,06936983) = 0,96469195
+k_sag = (1,5·0,96469195 − 0,91865005)/0,5 = 1,05677577
+k_tan = 1,05677577/0,84391790 = 1,25222527
+tt = −10/1,25222527 = −7,98578     ss = −10/1,05677577 = −9,46275
+```
+
+Tilattava: tangentiaalimeridiaanissa −7,986, sagittaalisessa −9,463, eli miinusmuodossa
+**−7,99 −1,48 × 51,46** linssin omasta 180-linjasta. Nykyinen koodi antaa saman
+voimakkuuden akselilla × 49,07.
+
+### Riippumaton tarkistus: 3D-säteenjuoksu
+
+Ohut linssi (toorinen etupinta kaarevuusmatriisilla P_L/(n−1) **linssin kannassa**,
+tasainen takapinta), säteet tulevat suuntaan −ẑ, pinnoilla vektorimuotoinen Snellin
+laki, vergenssi frontaalitasossa keskusdifferensseillä. Ei käytä OCR-kertoimia eikä
+μ:ta. Tulos eteenpäin-mallille (P_L → silmällä):
+
+| Tapaus (P_L, OD ellei toisin) | Säteenjuoksu | Uusi malli (μ_L, μ_F) | Nykyinen (μ_F, μ_F) |
+|---|---|---|---|
+| −4,00, panto 20° | −4,157 −0,551 × 180 | sama | sama |
+| −3,00 +2,00 × 135, wrap 15° | −1,058 −2,124 × 46,98 | sama | sama |
+| −10,00, 18°/15° | −10,568 −1,955 × 139,07 | −10,568 −1,954 × 139,07 | sama |
+| −5,00 +2,00 × 120, 18°/15° | −3,641 −1,811 × 19,13 | −3,641 −1,811 × 19,13 | −3,662 −1,757 × 22,09 |
+| sama OS | −3,179 −3,064 × 34,56 | −3,179 −3,064 × 34,56 | −3,185 −3,048 × 32,77 |
+| −4,00 +3,00 × 180, 18°/15° | −1,166 −3,376 × 91,64 | −1,166 −3,376 × 91,64 | −1,157 −3,416 × 94,06 |
+| +2,00 +2,50 × 30, 20°/25°, n 1,6 | 5,041 −2,062 × 108,77 | 5,041 −2,062 × 108,77 | 4,982 −1,968 × 115,84 |
+
+Uusi malli täsmää säteenjuoksuun 0,001 D:n ja 0,01°:n tarkkuudella kaikissa
+tapauksissa. Nykyinen malli täsmää vain, kun yksi kulmista on nolla tai linssi on
+pallopinta. (Pallomaisella linssillä kanta ei vaikuta eteenpäin, mutta käännöksessä
+syntyy sylinteri, jonka akseli on kannasta riippuvainen. Siksi nykyinen tilaus
+−10,00:lle on väärä.)
+
+### Mitä se tarkoittaa tilauksessa
+
+Kun nykyisen koodin ja OptiCampuksen tilaukset viedään säteenjuoksun läpi, saadaan
+jäännösvirhe silmällä. Esimerkkejä 18°/15°:lla:
+
+| Resepti | Ei kompensointia | OptiCampus | Nykyinen | Uusi |
+|---|---|---|---|---|
+| −10,00 DS | 2,59 D | 0,12 D | 0,10 D | 0,000 |
+| −3,00 −2,00 × 30 | 0,93 D | 0,26 D | 0,15 D | 0,000 |
+| −1,00 −3,00 × 90 | 0,58 D | 0,34 D | 0,18 D | 0,000 |
+| −1,75 +2,00 × 170 (OS) | 0,29 D | 0,23 D | 0,12 D | 0,000 |
+
+Luku on matriisierotuksen Frobenius-normi (sama mittari kuin residuaalissa).
+
+**Rajaus:** säteenjuoksu käyttää samaa kehysgeometriaa (`geometry.ts`: ensin wrap,
+sitten koko kehyksen panto). Se tarkistaa optiikan ja kannan käsittelyn, ei sitä, onko
+kiertojärjestys kasvoilla juuri tämä (OPEN-QUESTIONS kohta 5).
