@@ -26,6 +26,12 @@ cos τ = cos β · cos θ            n̂ = (sin β, −cos β·sin θ, cos β·c
 Käännös: kierrä tavoite `(t, s)`-kantaan, **jaa** komponentit kertoimilla
 (`tt/k_tan`, `ss/k_sag`, `ts/k_risti`), kierrä takaisin.
 
+**Korjaus 18.10.2026 (tapaus 10):** tavoite kierretään frontaalitason μ:llä, mutta
+tilattava kierretään takaisin **linssin oman kannan** kulmalla
+`μ_L = atan2(sin β·cos θ, sin θ) − 90°`. Ne eroavat vain yhdistetyssä kallistuksessa.
+Tapauksen 1 akselit on johdettu uudelleen tällä säännöllä; muiden tapausten luvut eivät
+muutu, koska niissä wrap tai panto on nolla.
+
 ---
 
 ## Tapaus 1 — `plan-own-case`
@@ -89,6 +95,12 @@ ss' = −0,8278486 / 1,0535080 = −0,7858019
 ts' =  0,2375708 / 1,1468000 =  0,2071598
 ```
 
+> **KORVATTU 18.10.2026.** Alla oleva palautus käyttää frontaalitason μ:tä myös
+> linssin kantaan, mikä on väärin yhdistetyssä kallistuksessa (tapaus 10). Oikea
+> palautus on kohdassa *OD, uusi palautus linssin kantaan* tämän tapauksen lopussa.
+> Vanha laskenta on jätetty näkyviin, koska edeltävät vaiheet (tt', ss', ts') ovat
+> yhä voimassa.
+
 Takaisin `(x, y)`-kantaan (`v_x² = u_y²`, `v_y² = u_x²`, `v_x·v_y = −0,4949596`):
 
 ```
@@ -114,8 +126,7 @@ C = √(0,4451828² + 0,1861880²) = √(0,1981877 + 0,0346660) = √0,2328537 =
 S = (−0,8847091 − 0,4395263 − 0,4825492)/2 = −0,9033923
 ```
 
-**OD tarkka: −0,9034 +0,4825 ax 168,65** (suunnitelman ehdollinen arvo oli
-−0,90 +0,48 ax 169 → täsmää).
+~~OD tarkka: −0,9034 +0,4825 ax 168,65~~ (vanha malli, korvattu).
 
 ### OS (β = +15°)
 
@@ -167,7 +178,7 @@ C = √(2,7369063 + 0,2379091) = √2,9748154 = 1,7247653
 S = (−1,4683152 + 0,1860446 − 1,7247653)/2 = −1,5035180
 ```
 
-**OS tarkka: −1,5035 +1,7248 ax 171,79.**
+~~OS tarkka: −1,5035 +1,7248 ax 171,79~~ (vanha malli, korvattu).
 
 > **Suunnitelman lukuihin verrattuna.** §5.3:n ehdolliset arvot olivat OD
 > −0,90 +0,48 ax 169 ja OS −1,50 +1,72 ax 172. Riippumaton johto antaa
@@ -178,14 +189,77 @@ S = (−1,4683152 + 0,1860446 − 1,7247653)/2 = −1,5035180
 > lopputulosten epävarmuus on luokkaa 1e-4 D. Testin hyväksymisraja on ±0,005 D (§9.3),
 > eli mittaluokkaa suurempi kuin käsinlaskennan oma virhe.
 
+### Uusi palautus linssin kantaan (18.10.2026)
+
+Kerroinjaon tulos (tt', ss', ts') on yllä johdettu ja pysyy. Vain palautus muuttuu:
+käytetään linssin kannan kulmaa μ_L.
+
+**OD** (β = −15°, θ = 18°):
+
+```
+ŝ·ê_h = sin θ = 0,3090170      ŝ·ê_v = sin β·cos θ = −0,2588190·0,9510565 = −0,2461515
+atan2(−0,2461515, 0,3090170) = −38,5395°   →  μ_L = −128,5395° ≡ 51,4605°
+(frontaali μ = 49,0715°, ero Δ = +2,3890°)
+
+t̂_L = (0,6230545, 0,7821784)     ŝ_L = (−0,7821784, 0,6230545)
+u_x² = 0,3881969   u_y² = 0,6118031   u_x·u_y = 0,4873398
+u_x·v_x = −0,4873398   u_y·v_y = +0,4873398   v_x·v_y = −0,4873398
+u_x·v_y + u_y·v_x = −0,2236062
+
+Fxx = −0,5384317·0,3881969 + 2·0,2071598·(−0,4873398) + (−0,7858019)·0,6118031
+    = −0,2090175 − 0,2019144 − 0,4807560 = −0,8916880
+Fyy = −0,5384317·0,6118031 + 2·0,2071598·0,4873398 + (−0,7858019)·0,3881969
+    = −0,3294142 + 0,2019144 − 0,3050459 = −0,4325456
+Fxy = −0,5384317·0,4873398 + 0,2071598·(−0,2236062) + (−0,7858019)·(−0,4873398)
+    = −0,2623992 − 0,0463222 + 0,3829525 = +0,0742311
+
+b − a = 0,4591424     −2c = −0,1484622
+C  = √(0,2108118 + 0,0220410) = √0,2328528 = 0,4825482
+2α = atan2(−0,1484622, 0,4591424) = −17,9185°  →  α = 171,0408°
+S  = (−0,8916880 − 0,4325456 − 0,4825482)/2 = −0,9033909
+```
+
+**OD tarkka: −0,9034 +0,4825 ax 171,04.**
+
+**OS** (β = +15°):
+
+```
+ŝ·ê_v = +0,2461515   atan2(0,2461515, 0,3090170) = 38,5395°  →  μ_L = 128,5395°
+(frontaali μ = 130,9285°, ero Δ = −2,3890°)
+
+t̂_L = (−0,6230545, 0,7821784)    ŝ_L = (−0,7821784, −0,6230545)
+u_x² = 0,3881969   u_y² = 0,6118031   u_x·u_y = −0,4873398
+u_x·v_x = +0,4873398   u_y·v_y = −0,4873398   v_x·v_y = +0,4873398
+u_x·v_y + u_y·v_x = −0,2236062
+
+Fxx = −0,2971198 − 0,8317803 − 0,3162249 = −1,4451250
+Fyy = −0,4682644 + 0,8317803 − 0,2006488 = +0,1628671
+Fxy = +0,3730022 + 0,1908230 − 0,2518931 = +0,3119320
+
+b − a = 1,6079922     −2c = −0,6238640
+C  = √(2,5856389 + 0,3892063) = √2,9748452 = 1,7247740
+2α = atan2(−0,6238640, 1,6079922) = −21,2051°  →  α = 169,3974°
+S  = (−1,4451250 + 0,1628671 − 1,7247740)/2 = −1,5035159
+```
+
+**OS tarkka: −1,5035 +1,7248 ax 169,40.**
+
+Tarkistus: sfääri ja sylinteri ovat samat kuin vanhassa palautuksessa (7. desimaalin
+pyöristystä lukuun ottamatta), ja akselit ovat kiertyneet täsmälleen Δ:n verran
+(168,6507 + 2,3890 = 171,0397 ≈ 171,0408; 171,7859 − 2,3890 = 169,3969 ≈ 169,3974).
+Pieni ero on käsinlaskun pyöristystä, ja se täsmää teoriaan: muutos on pelkkä kierto.
+
+> **Suunnitelman lukuihin verrattuna.** Suunnitelman §5.3 ehdolliset arvot (OD ax 169,
+> OS ax 172) perustuivat samaan frontaalikanta-oletukseen, ja ne ovat nyt vanhentuneet.
+> Säteenjuoksu (`test/raytrace.test.ts`) vahvistaa uudet akselit: tilaus toteutuu
+> silmällä reseptinä 0,002 D:n tarkkuudella.
+
 ### Naiivi 0,25 D:n pyöristys
 
 ```
-OD: −0,9033923 → −1,00   0,4825492 → 0,50   168,6507 → 169
-OS: −1,5035180 → −1,50   1,7247653 → 1,75   171,7859 → 172
+OD: −0,9033909 → −1,00   0,4825482 → 0,50   171,0408 → 171
+OS: −1,5035159 → −1,50   1,7247740 → 1,75   169,3974 → 169
 ```
-
-Täsmää suunnitelman §5.3 odotukseen (OD −1,00 +0,50 ax 169, OS −1,50 +1,75 ax 172).
 Ruudukkohaun tulos voi poiketa naiivista; testi vaatii vain, ettei se ole koskaan
 huonompi (§5.2).
 
@@ -454,10 +528,10 @@ sin θ =  0,30901699   cos θ = 0,95105652
 
 frontaali: atan2(−0,25881905, 0,96592583·0,30901699 = 0,29848749) = −40,9293°
            μ_F = −130,9293° ≡ 49,0707°        (koodin μ = 49,0715 ✓)
-linssi:    atan2(−0,25881905·0,95105652 = −0,24615154, 0,30901699) = −38,5427°
-           μ_L = −128,5427° ≡ 51,4573°
+linssi:    atan2(−0,25881905·0,95105652 = −0,24615154, 0,30901699) = −38,5395°
+           μ_L = −128,5395° ≡ 51,4605°
 
-Δ = μ_L − μ_F = +2,387°   (OS: −2,387°, peilikuva)
+Δ = μ_L − μ_F = +2,389°   (OS: −2,389°, peilikuva)
 ```
 
 (OPEN-QUESTIONS kohdan 3 aiempi arvio 4,7° oli datumlinjan ê_h oma projektiokulma
@@ -489,7 +563,7 @@ tt = −10/1,25222527 = −7,98578     ss = −10/1,05677577 = −9,46275
 ```
 
 Tilattava: tangentiaalimeridiaanissa −7,986, sagittaalisessa −9,463, eli miinusmuodossa
-**−7,99 −1,48 × 51,46** linssin omasta 180-linjasta. Nykyinen koodi antaa saman
+**−7,99 −1,48 × 51,46** linssin omasta 180-linjasta (μ_L = 51,4605°). Nykyinen koodi antaa saman
 voimakkuuden akselilla × 49,07.
 
 ### Riippumaton tarkistus: 3D-säteenjuoksu

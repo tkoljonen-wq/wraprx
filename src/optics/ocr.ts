@@ -8,23 +8,26 @@
  *   k_risti = k_sag / cos τ
  *
  * Kertoimet ovat MULTIPLIKATIIVISIA eteenpäin-suunnassa: kallistetun linssin
- * nimellisvoimakkuus M_linssi tuottaa silmällä voimakkuuden
+ * nimellisvoimakkuus M_linssi (linssin omassa kannassa) tuottaa silmällä
+ * (frontaalikannassa) voimakkuuden
  *
- *   M_silmä = R(μ) · [[k_tan·M_tt, k_risti·M_ts], [k_risti·M_ts, k_sag·M_ss]] · R(μ)ᵀ
+ *   M' = R(μ_L)ᵀ · M_linssi · R(μ_L)
+ *   M_silmä = R(μ) · [[k_tan·M'_tt, k_risti·M'_ts], [k_risti·M'_ts, k_sag·M'_ss]] · R(μ)ᵀ
  *
- * missä (t, s) on tangentiaali–sagittaalikanta ja μ tangentiaalimeridiaani.
- * Käännös on sama jako toisin päin: analyyttinen, ei iteraatiota.
+ * missä (t, s) on tangentiaali–sagittaalikanta, μ sen kulma frontaalitasossa ja μ_L
+ * linssin omassa tasossa (`geometry.ts`). Käännös on sama jako toisin päin:
+ * analyyttinen, ei iteraatiota.
  *
  * Ristitermin kerroin k_risti = k_sag/cos τ on geometrisesti sama asia kuin muut
  * kaksi: projektio kutistaa tangentiaalisuunnan tekijällä cos τ, joten voimakkuus
  * skaalautuu tangentiaalisuunnassa 1/cos²τ, ristitermissä 1/cos τ ja
  * sagittaalisuunnassa 1 — kaikki kerrottuna yhteisellä taittotekijällä k_sag.
  *
- * MALLIN RAJAUS: linssitason oma kanta (ê_h, ê_v) samastetaan frontaalitason
- * kantaan (x, y). Näiden välinen kierto on toisen kertaluvun ilmiö kulmissa
- * (≈ β·θ) mutta ei häviävän pieni suurilla kulmilla. Suunnitelman §3.4 määrittelee
- * μ:n frontaalitasossa (atan2(n̂_y, n̂_x)) ja sitä käytetään symmetrisesti
- * molempiin suuntiin; §5.3:n referenssitapaus toistuu tällä valinnalla.
+ * Linssin kanta (18.10.2026): aiemmin linssin oma kanta samastettiin frontaalitason
+ * kantaan (μ_L = μ). Se on oikein vain, kun wrap tai panto on nolla. Yhdistetyssä
+ * kallistuksessa tilauksen akseli oli väärä noin 2,4° (18°/15°). Korjaus on johdettu
+ * käsin ja tarkistettu riippumattomalla 3D-säteenjuoksulla (test/raytrace.test.ts,
+ * derivations.md tapaus 10).
  */
 import {
   rotateFromBasis,
@@ -110,8 +113,9 @@ export function forwardTilt(
   lensPower: PowerMatrix,
   coefficients: OcrCoefficients,
   muDeg: number,
+  muLensDeg: number = muDeg,
 ): PowerMatrix {
-  const r = rotateToBasis(lensPower, muDeg);
+  const r = rotateToBasis(lensPower, muLensDeg);
   return rotateFromBasis(
     {
       tt: r.tt * coefficients.kTan,
@@ -124,12 +128,16 @@ export function forwardTilt(
 
 /**
  * Käännös: mikä nimellisvoimakkuus pitää tilata, jotta silmällä toteutuu `target`.
- * Analyyttinen käänteisoperaatio forwardTilt:lle.
+ * Analyyttinen käänteisoperaatio forwardTilt:lle. Tulos on linssin omassa kannassa.
+ *
+ * `muLensDeg` oletuksena = `muDeg` vain yksinkertaisia kertoimien testejä varten;
+ * tuotantopolku (`index.ts`) antaa aina molemmat.
  */
 export function inverseTilt(
   target: PowerMatrix,
   coefficients: OcrCoefficients,
   muDeg: number,
+  muLensDeg: number = muDeg,
 ): PowerMatrix {
   const { kTan, kSag, kCross } = coefficients;
   if (!(kTan > 0) || !(kSag > 0) || !(kCross > 0)) {
@@ -142,7 +150,7 @@ export function inverseTilt(
       ss: r.ss / kSag,
       ts: r.ts / kCross,
     },
-    muDeg,
+    muLensDeg,
   );
 }
 

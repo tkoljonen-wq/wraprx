@@ -17,14 +17,14 @@
       },
       "expected": {
         "od": {
-          "exact": { "sphere": -0.9033923, "cylinder": 0.4825492, "axis": 168.6507 },
-          "naiveRounded025": { "sphere": -1.0, "cylinder": 0.5, "axis": 169 },
+          "exact": { "sphere": -0.9033909, "cylinder": 0.4825482, "axis": 171.0408 },
+          "naiveRounded025": { "sphere": -1.0, "cylinder": 0.5, "axis": 171 },
           "tau": 23.2705,
           "mu": 49.0715
         },
         "os": {
-          "exact": { "sphere": -1.503518, "cylinder": 1.7247653, "axis": 171.7859 },
-          "naiveRounded025": { "sphere": -1.5, "cylinder": 1.75, "axis": 172 },
+          "exact": { "sphere": -1.5035159, "cylinder": 1.724774, "axis": 169.3974 },
+          "naiveRounded025": { "sphere": -1.5, "cylinder": 1.75, "axis": 169 },
           "tau": 23.2705,
           "mu": 130.9285
         }

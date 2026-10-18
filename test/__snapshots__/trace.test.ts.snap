@@ -103,6 +103,15 @@ exports[`laskentajälki > OD:n jälki vastaa snapshotia 1`] = `
       },
     },
     {
+      "label": "Tangentiaalimeridiaani linssin kannassa μ_L",
+      "name": "muLens",
+      "value": {
+        "kind": "scalar",
+        "unit": "deg",
+        "value": 51.460465804,
+      },
+    },
+    {
       "label": "Linssitason normaali n̂",
       "name": "normal",
       "value": {
@@ -163,12 +172,12 @@ exports[`laskentajälki > OD:n jälki vastaa snapshotia 1`] = `
       "value": {
         "kind": "matrix",
         "matrix": {
-          "xx": -0.882500576,
-          "xy": 0.092838051,
-          "yy": -0.438959325,
+          "xx": -0.889463085,
+          "xy": 0.074042334,
+          "yy": -0.431996816,
         },
         "power": {
-          "axis": 168.642372227,
+          "axis": 171.031455645,
           "cylinder": 0.480837245,
           "sphere": -0.901148573,
         },
@@ -180,12 +189,12 @@ exports[`laskentajälki > OD:n jälki vastaa snapshotia 1`] = `
       "value": {
         "kind": "matrix",
         "matrix": {
-          "xx": -0.981795964,
-          "xy": 0.093651648,
-          "yy": -0.518204036,
+          "xx": -0.987764129,
+          "xy": 0.077254249,
+          "yy": -0.512235871,
         },
         "power": {
-          "axis": 169,
+          "axis": 171,
           "cylinder": 0.5,
           "sphere": -1,
         },
@@ -197,12 +206,12 @@ exports[`laskentajälki > OD:n jälki vastaa snapshotia 1`] = `
       "value": {
         "kind": "matrix",
         "matrix": {
-          "xx": -0.981795964,
-          "xy": 0.093651648,
-          "yy": -0.518204036,
+          "xx": -0.987764129,
+          "xy": 0.077254249,
+          "yy": -0.512235871,
         },
         "power": {
-          "axis": 169,
+          "axis": 171,
           "cylinder": 0.5,
           "sphere": -1,
         },
@@ -214,7 +223,7 @@ exports[`laskentajälki > OD:n jälki vastaa snapshotia 1`] = `
       "value": {
         "kind": "scalar",
         "unit": "D",
-        "value": 0.127045748,
+        "value": 0.126972572,
       },
     },
     {
@@ -223,7 +232,7 @@ exports[`laskentajälki > OD:n jälki vastaa snapshotia 1`] = `
       "value": {
         "kind": "scalar",
         "unit": "D",
-        "value": 0.127045748,
+        "value": 0.126972572,
       },
     },
     {
@@ -266,14 +275,14 @@ exports[`laskentajälki > OD:n jälki vastaa snapshotia 1`] = `
       "value": {
         "kind": "matrix",
         "matrix": {
-          "xx": -1.106515764,
-          "xy": 0.035582596,
-          "yy": -0.595419977,
+          "xx": -1.104749424,
+          "xy": 0.039194842,
+          "yy": -0.596616473,
         },
         "power": {
-          "axis": 176.036539096,
-          "cylinder": 0.516026539,
-          "sphere": -1.10898114,
+          "axis": 175.615057295,
+          "cylinder": 0.514143987,
+          "sphere": -1.107754942,
         },
       },
     },
@@ -283,14 +292,14 @@ exports[`laskentajälki > OD:n jälki vastaa snapshotia 1`] = `
       "value": {
         "kind": "matrix",
         "matrix": {
-          "xx": -1.127654988,
-          "xy": -0.022227214,
-          "yy": -0.583573456,
+          "xx": -1.120636613,
+          "xy": 0.00119834,
+          "yy": -0.586788703,
         },
         "power": {
-          "axis": 2.335500962,
-          "cylinder": 0.545894596,
-          "sphere": -1.12856152,
+          "axis": 179.87138779,
+          "cylinder": 0.533853289,
+          "sphere": -1.120639303,
         },
       },
     },
@@ -309,7 +318,7 @@ exports[`laskentajälki > OD:n jälki vastaa snapshotia 1`] = `
       "value": {
         "kind": "scalar",
         "unit": "D",
-        "value": 0.146122853,
+        "value": 0.145237975,
       },
     },
     {
@@ -318,7 +327,7 @@ exports[`laskentajälki > OD:n jälki vastaa snapshotia 1`] = `
       "value": {
         "kind": "scalar",
         "unit": "D",
-        "value": 0.181600621,
+        "value": 0.163210544,
       },
     },
     {
@@ -408,7 +417,7 @@ exports[`laskentajälki > OD:n jälki vastaa snapshotia 1`] = `
       "value": {
         "kind": "scalar",
         "unit": "pd",
-        "value": 0.272066628,
+        "value": 0.281693492,
       },
     },
   ],
@@ -518,6 +527,15 @@ exports[`laskentajälki > OS:n jälki vastaa snapshotia 1`] = `
       },
     },
     {
+      "label": "Tangentiaalimeridiaani linssin kannassa μ_L",
+      "name": "muLens",
+      "value": {
+        "kind": "scalar",
+        "unit": "deg",
+        "value": 128.539534196,
+      },
+    },
+    {
       "label": "Linssitason normaali n̂",
       "name": "normal",
       "value": {
@@ -578,12 +596,12 @@ exports[`laskentajälki > OS:n jälki vastaa snapshotia 1`] = `
       "value": {
         "kind": "matrix",
         "matrix": {
-          "xx": -1.461863309,
-          "xy": 0.243049061,
-          "yy": 0.186301053,
+          "xx": -1.438753826,
+          "xy": 0.310848877,
+          "yy": 0.16319157,
         },
         "power": {
-          "axis": 171.783735165,
+          "axis": 169.394651748,
           "cylinder": 1.718353033,
           "sphere": -1.496957645,
         },
@@ -595,12 +613,12 @@ exports[`laskentajälki > OS:n jälki vastaa snapshotia 1`] = `
       "value": {
         "kind": "matrix",
         "matrix": {
-          "xx": -1.466103984,
-          "xy": 0.241182686,
-          "yy": 0.216103984,
+          "xx": -1.436285873,
+          "xy": 0.327780769,
+          "yy": 0.186285873,
         },
         "power": {
-          "axis": 172,
+          "axis": 169,
           "cylinder": 1.75,
           "sphere": -1.5,
         },
@@ -612,12 +630,12 @@ exports[`laskentajälki > OS:n jälki vastaa snapshotia 1`] = `
       "value": {
         "kind": "matrix",
         "matrix": {
-          "xx": -1.466103984,
-          "xy": 0.241182686,
-          "yy": 0.216103984,
+          "xx": -1.436285873,
+          "xy": 0.327780769,
+          "yy": 0.186285873,
         },
         "power": {
-          "axis": 172,
+          "axis": 169,
           "cylinder": 1.75,
           "sphere": -1.5,
         },
@@ -629,7 +647,7 @@ exports[`laskentajälki > OS:n jälki vastaa snapshotia 1`] = `
       "value": {
         "kind": "scalar",
         "unit": "D",
-        "value": 0.030218616,
+        "value": 0.033358891,
       },
     },
     {
@@ -638,7 +656,7 @@ exports[`laskentajälki > OS:n jälki vastaa snapshotia 1`] = `
       "value": {
         "kind": "scalar",
         "unit": "D",
-        "value": 0.030218616,
+        "value": 0.033358891,
       },
     },
     {
@@ -681,14 +699,14 @@ exports[`laskentajälki > OS:n jälki vastaa snapshotia 1`] = `
       "value": {
         "kind": "matrix",
         "matrix": {
-          "xx": -1.686869258,
-          "xy": 0.337352895,
-          "yy": 0.224898654,
+          "xx": -1.682539339,
+          "xy": 0.357933558,
+          "yy": 0.21697274,
         },
         "power": {
-          "axis": 170.280459971,
-          "cylinder": 2.027334322,
-          "sphere": -1.744652463,
+          "axis": 169.675065879,
+          "cylinder": 2.029929029,
+          "sphere": -1.747747814,
         },
       },
     },
@@ -698,14 +716,14 @@ exports[`laskentajälki > OS:n jälki vastaa snapshotia 1`] = `
       "value": {
         "kind": "matrix",
         "matrix": {
-          "xx": -1.950386411,
-          "xy": 0.465399473,
-          "yy": 0.183954248,
+          "xx": -1.971349742,
+          "xy": 0.373934727,
+          "yy": 0.220940681,
         },
         "power": {
-          "axis": 168.218845622,
-          "cylinder": 2.328475194,
-          "sphere": -2.047453678,
+          "axis": 170.5818186,
+          "cylinder": 2.316343244,
+          "sphere": -2.033376152,
         },
       },
     },
@@ -724,7 +742,7 @@ exports[`laskentajälki > OS:n jälki vastaa snapshotia 1`] = `
       "value": {
         "kind": "scalar",
         "unit": "D",
-        "value": 0.035449447,
+        "value": 0.036257505,
       },
     },
     {
@@ -733,7 +751,7 @@ exports[`laskentajälki > OS:n jälki vastaa snapshotia 1`] = `
       "value": {
         "kind": "scalar",
         "unit": "D",
-        "value": 0.320918773,
+        "value": 0.294463598,
       },
     },
     {
@@ -823,7 +841,7 @@ exports[`laskentajälki > OS:n jälki vastaa snapshotia 1`] = `
       "value": {
         "kind": "scalar",
         "unit": "pd",
-        "value": 0.378706177,
+        "value": 0.402488713,
       },
     },
   ],

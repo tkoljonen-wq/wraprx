@@ -520,6 +520,7 @@ function solveEye(
   trace.scalar('panto', 'Pantoskooppinen kaltevuus', geometry.pantoDeg, 'deg');
   trace.scalar('tau', 'Kokonaiskallistus τ', geometry.tauDeg, 'deg');
   trace.scalar('mu', 'Tangentiaalimeridiaani μ', geometry.muDeg, 'deg');
+  trace.scalar('muLens', 'Tangentiaalimeridiaani linssin kannassa μ_L', geometry.muLensDeg, 'deg');
   trace.vector3('normal', 'Linssitason normaali n̂', geometry.normal);
   trace.flag('baseCurveApplied', 'Base curve -korjaus mukana', geometry.baseCurveApplied);
   if (geometry.baseCurveExtra) {
@@ -538,7 +539,7 @@ function solveEye(
   trace.scalar('kTan', 'k_tan', coefficients.kTan, 'ratio');
   trace.scalar('kCross', 'k_risti', coefficients.kCross, 'ratio');
 
-  const exactMatrix = inverseTilt(targetMatrix, coefficients, geometry.muDeg);
+  const exactMatrix = inverseTilt(targetMatrix, coefficients, geometry.muDeg, geometry.muLensDeg);
   const exactPower = spheroCylFromMatrix(exactMatrix);
   trace.matrix('orderedExact', 'Tilattava, tarkka', exactMatrix);
 
@@ -556,9 +557,10 @@ function solveEye(
   trace.scalar('roundingCandidates', 'Arvioidut ehdokkaat', rounding.candidatesEvaluated, 'count');
 
   // 6. Takaisinlaskenta: mitä käyttäjä todella saa.
-  const asWornExact = forwardTilt(exactMatrix, coefficients, geometry.muDeg);
-  const asWornRounded = forwardTilt(roundedMatrix, coefficients, geometry.muDeg);
-  const asWornUncompensated = forwardTilt(rxMatrix, coefficients, geometry.muDeg);
+  const { muDeg, muLensDeg } = geometry;
+  const asWornExact = forwardTilt(exactMatrix, coefficients, muDeg, muLensDeg);
+  const asWornRounded = forwardTilt(roundedMatrix, coefficients, muDeg, muLensDeg);
+  const asWornUncompensated = forwardTilt(rxMatrix, coefficients, muDeg, muLensDeg);
   trace.matrix('asWornExact', 'Toteutuva silmällä, tarkka', asWornExact);
   trace.matrix('asWornRounded', 'Toteutuva silmällä, 0,25 D', asWornRounded);
   trace.matrix('asWornUncompensated', 'Toteutuva silmällä, kompensoimaton resepti', asWornUncompensated);

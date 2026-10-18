@@ -71,7 +71,7 @@ joten tulos on jäljitettävissä tiettyyn koodiversioon.
 
 ```bash
 npm install
-npm test            # 129 testiä: rajatesti, referenssi, ominaisuus, konsistenssi, jälki, prisma, lomake, jakolinkki, presetit
+npm test            # 133 testiä: rajatesti, referenssi, ominaisuus, konsistenssi, jälki, prisma, lomake, jakolinkki, presetit, säteenjuoksu
 npm run typecheck
 npm run demo        # tulostaa referenssitapauksen tuloksen ja laskentajäljen
 npm run validate:lab

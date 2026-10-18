@@ -41,7 +41,7 @@ nimellisprisma (docs/OPEN-QUESTIONS.md kohta 11.1). Käännöksen saa kytkeä po
 
 ### P0–P3:n valmistumistila
 
-`npm run typecheck`, `npm test` (129 testiä, 10 tiedostoa) ja `npm run build` menevät läpi.
+`npm run typecheck`, `npm test` (133 testiä, 11 tiedostoa) ja `npm run build` menevät läpi.
 Kaikki §9.3:n P0-kriteerit on katettu testillä. Rajatesti on koeteltu tarkoituksellisella
 rikkomuksella (`window` + ulkopuolinen import ytimeen) ja se kaatui kuten pitää.
 
@@ -64,6 +64,16 @@ Referenssitapaus §5.3 on johdettu käsin koodista riippumatta
 ([test/cases/derivations.md](test/cases/derivations.md)) ja johto vahvisti suunnitelman
 ehdolliset luvut: OD −0,9034 +0,4825 ax 168,65 ja OS −1,5035 +1,7248 ax 171,79.
 Johto vahvisti myös etumerkkivalinnan `betaDeg < 0` OD:lle.
+
+**Korjattu 18.10.2026: linssin kanta.** Tilauksen akseli luetaan linssin omasta
+180-linjasta ê_h, ja yhdistetyssä kallistuksessa sen tangentiaalimeridiaani μ_L eroaa
+silmän frontaalitason μ:stä (18°/15°: 2,39°). `inverseTilt`/`forwardTilt` saavat
+nyt molemmat kulmat (`geometry.muDeg`, `geometry.muLensDeg`). Referenssitapaus 1 on
+johdettu uudelleen: **OD −0,9034 +0,4825 ax 171,04 ja OS −1,5035 +1,7248 ax 169,40**.
+Riippumaton tarkistus on `test/raytrace.test.ts`: 3D-säteenjuoksu Snellin lailla ilman
+OCR-kertoimia (`test/support/raytrace.ts`). Se kaatuu, jos kanta käsitellään väärin.
+OptiCampuksen laskuri poikkeaa tästä 2–5° yhdistetyssä kallistuksessa; säteenjuoksun
+mukaan sen tilaus jättää silmälle 0,1–0,3 D virheen (docs/OPEN-QUESTIONS.md kohta 9).
 
 ## Mistä jatketaan
 

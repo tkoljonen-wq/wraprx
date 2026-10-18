@@ -22,6 +22,15 @@
  * Tästä seuraa suunnitelman §3.3:n muoto:
  *   cos τ = cos(wrap_per_lens)·cos(panto)
  *   μ     = atan2(n̂_y, n̂_x) mod 180°   (tangentiaalimeridiaani)
+ *
+ * Tangentiaalimeridiaanilla on KAKSI kulmaa: silmän frontaalitasossa (μ, kanta x̂, ŷ)
+ * ja linssin omassa tasossa (μ_L, kanta ê_h, ê_v). Sagittaalisuunta ŝ = ẑ × n̂ on
+ * sama 3D-vektori kummassakin tasossa, joten:
+ *   μ   = atan2(sin β, cos β·sin θ) − 90°
+ *   μ_L = atan2(sin β·cos θ, sin θ) − 90°
+ * Ne eroavat vain, kun sekä wrap että panto ovat nollasta poikkeavia (18°/15°: 2,39°).
+ * Tilauksen akseli luetaan linssin omasta 180-linjasta ê_h, joten ero on todellinen.
+ * Johto ja riippumaton säteenjuoksu: test/cases/derivations.md, tapaus 10.
  */
 import { normalizeAxis, toDeg, toRad } from './units.js';
 
@@ -53,8 +62,10 @@ export interface TiltGeometry {
   readonly pantoDeg: number;
   /** Kokonaiskallistus τ = linssin normaalin ja katselinjan välinen kulma. */
   readonly tauDeg: number;
-  /** Tangentiaalimeridiaani, 0 < μ <= 180. */
+  /** Tangentiaalimeridiaani silmän frontaalitasossa, 0 < μ <= 180. */
   readonly muDeg: number;
+  /** Sama meridiaani linssin omassa kannassa (ê_h, ê_v), 0 < μ_L <= 180. */
+  readonly muLensDeg: number;
   readonly normal: Vec3;
   readonly eh: Vec3;
   readonly ev: Vec3;
@@ -92,6 +103,11 @@ export function tiltGeometry(
   const cosTau = Math.min(1, Math.max(-1, normal[2]));
   const tauDeg = toDeg(Math.acos(cosTau));
   const muDeg = normalizeAxis(toDeg(Math.atan2(normal[1], normal[0])));
+  // ŝ = ẑ × n̂ = (−n_y, n_x, 0); ŝ·ê_h = sin θ, ŝ·ê_v = sin β·cos θ.
+  // Ilman kallistusta meridiaani on määrittelemätön (kertoimet ovat 1), ja silloin
+  // kantojen on oltava samat, jotta käännös on identiteetti.
+  const untilted = Math.hypot(sinB * cosT, sinT) < 1e-12;
+  const muLensDeg = untilted ? muDeg : normalizeAxis(toDeg(Math.atan2(sinB * cosT, sinT)) - 90);
 
   return {
     eye,
@@ -99,6 +115,7 @@ export function tiltGeometry(
     pantoDeg,
     tauDeg,
     muDeg,
+    muLensDeg,
     normal,
     eh,
     ev,

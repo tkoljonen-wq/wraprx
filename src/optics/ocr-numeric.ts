@@ -82,6 +82,7 @@ export function inverseTiltNumeric(
   target: PowerMatrix,
   coefficients: OcrCoefficients,
   muDeg: number,
+  muLensDeg: number = muDeg,
   options: NumericInverseOptions = {},
 ): NumericInverseResult {
   const tolerance = options.tolerance ?? 1e-12;
@@ -90,7 +91,7 @@ export function inverseTiltNumeric(
   const maxHalvings = options.maxHalvings ?? 30;
 
   const errorOf = (v: Vec): PowerMatrix =>
-    subtractMatrix(forwardTilt(toMatrix(v), coefficients, muDeg), target);
+    subtractMatrix(forwardTilt(toMatrix(v), coefficients, muDeg, muLensDeg), target);
 
   // Alkuarvaus: tilattava = haluttu. Kallistus on pieni häiriö, joten tämä on lähellä.
   let x: Vec = [target.xx, target.yy, target.xy];

@@ -71,7 +71,7 @@ koska se on käyttöliittymäkysymys (P1) eikä laskentakysymys.
 
 ---
 
-## 3. Linssitason kanta vs. frontaalitason kanta
+## 3. Linssitason kanta vs. frontaalitason kanta — KORJATTU 18.10.2026 ✅
 
 OCR-käännöksessä μ määritellään frontaalitasossa (`atan2(n̂_y, n̂_x)`, suunnitelma §3.4)
 ja sitä käytetään symmetrisesti sekä tilattavan linssin että silmällä toteutuvan
@@ -84,15 +84,17 @@ linssitasolle ja silmälle) kuuluu samaan luokkaan kuin base curve -malli: se on
 kysymys, ja sen kokoluokka on syytä mitata valmistajadataa vasten ennen kuin sitä
 muutetaan.
 
-**RATKAISTU JOHDOLLA 18.10.2026, KOODI EI VIELÄ MUUTETTU.** Johto ja säteenjuoksu ovat
+**KORJATTU KOODIIN 18.10.2026 käyttäjän luvalla.** Johto ja säteenjuoksu ovat
 tiedostossa `test/cases/derivations.md`, tapaus 10. Tulos: linssin tangentiaalimeridiaani
 omassa kannassaan on μ_L = atan2(sin β·cos θ, sin θ) − 90°, kun silmän frontaalitasossa
 se on μ_F = atan2(sin β, cos β·sin θ) − 90°. 18°/15°:lla ero on 2,39° (ei 4,7°, joka oli
 datumlinjan projektiokulma). Oikea tilaus on nykyinen tilaus kierrettynä Δ = μ_L − μ_F:n
 verran; voimakkuudet eivät muutu. Riippumaton 3D-säteenjuoksu täsmää uuteen malliin
 0,001 D:n tarkkuudella, ja nykyinen malli jättää silmälle jopa 0,1–0,2 D:n virheen
-yhdistetyllä kallistuksella. Koodimuutos odottaa käyttäjän lupaa. Muutos muuttaa myös
-referenssitapauksen 1 akseleita, joten tapaus on johdettava uudelleen käsin.
+yhdistetyllä kallistuksella. `geometry.ts` laskee nyt `muLensDeg`:n, ja `ocr.ts`
+kiertää linssin puolen sillä. Referenssitapaus 1 johdettiin uudelleen käsin (OD ax
+171,04, OS ax 169,40), ja `test/raytrace.test.ts` tarkistaa mallin säteenjuoksua
+vasten satunnaisilla kulmilla, reseptillä ja materiaalilla.
 
 ---
 

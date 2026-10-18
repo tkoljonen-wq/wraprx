@@ -287,7 +287,7 @@ Analyyttinen käännös (`ocr.ts`, §3.4) toteutetaan normaalisti. Sen rinnalle 
 - Desentraatio: wrap = 0 ja panto = 0 → kierretyn tason desentraatio yhtyy boxing-kaavaan; kulmien kasvaessa ero kasvaa monotonisesti.
 
 **3. Sisäiset referenssitapaukset** (`test/cases/internal.json`) — käsin lasketut, dokumentoidulla johdolla. **Johdon on oltava riippumaton toteutettavasta koodista:** jokaiselle tapaukselle kirjataan `test/cases/derivations.md`:hen laskureitti (esim. Martin käsin, exaktin ero eriteltynä, välivaiheet näkyvissä). Aiemmista istunnoista tai samasta koodista peräisin olevia lukuja ei hyväksytä referenssiksi ilman uudelleenjohtoa — muuten testi vain toistaa oletukset, joita sen pitäisi tarkistaa. Alla olevat odotusarvot ovat ehdollisia kunnes johto on kirjattu:
-- Oma tapauksesi: OD −1,00 +0,50 ax 175 / OS −1,75 +2,00 ax 170, wrap 15°/linssi, panto 18°, PC → tarkka OD −0,90 +0,48 ax 169 / OS −1,50 +1,72 ax 172; 0,25 D → OD −1,00 +0,50 ax 169 / OS −1,50 +1,75 ax 172.
+- Oma tapauksesi: OD −1,00 +0,50 ax 175 / OS −1,75 +2,00 ax 170, wrap 15°/linssi, panto 18°, PC → tarkka OD −0,90 +0,48 ax 169 / OS −1,50 +1,72 ax 172; 0,25 D → OD −1,00 +0,50 ax 169 / OS −1,50 +1,75 ax 172. *Päivitetty 18.10.2026: linssin kannan korjauksen jälkeen akselit ovat OD 171 ja OS 169 (derivations.md tapaukset 1 ja 10).*
 - Ristiintarkistus OptiCampuksen Lens Tilt & Wrap -laskuria vastaan Martin-tilassa (±0,01 D). Tämä on ainoa käytettävissä oleva riippumaton ulkoinen lähde, ja se kelpaa vain approksimaatiohaaran validointiin.
 - Degeneroituneet tapaukset: plano, puhdas sylinteri, akseli 0/90/180, τ = 0, prisma = 0.
 
