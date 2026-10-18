@@ -10,15 +10,15 @@ paikassa**. Mikään näistä ei estä P0:aa, mutta jokainen vaikuttaa lukuihin.
 ## 1. OC-korkeuden kriteeri — RATKAISTU 1.9.2026 ✅
 
 **Päätös: (A) katselinjan lävistyspiste.** Käyttäjä (optikko) vahvisti kriteerin
-1.9.2026 selityksen ja sivukuvan perusteella. Tilauslomakkeelle ja tuloskortin
+1.9.2026 selityksen ja sivukuvan perusteella. Tuloskortin
 pääluvuksi menee `ocHeightMm` (esimerkkitapauksessa 22,45 mm). Vaihtoehto (B) jää
 vertailuluvuksi laskentajälkeen (`opticalAxisOcHeightMm`), samoin nyrkkisääntö
 (`vogelOcHeightMm`). `geometry.ts`:n funktiota `decentration` ei muuteta.
 
 **Yhä auki, ei laskentakysymys vaan tilauskäytäntö:** tekeekö linssitalo panto-pudotuksen
 itse annetusta korkeudesta? Jos tekee, pudotus tulisi kahdesti tai kompensaatio menisi
-hukkaan. Tämä on varmistettava linssitalolta ennen ensimmäistä oikeaa tilausta ja se
-kuuluu tilauslomakkeen saatetekstiin (P3), ei laskentaan.
+hukkaan. Tämä on varmistettava linssitalolta ennen ensimmäistä oikeaa tilausta. Se on
+tilauskäytäntö, ei laskentaa. (Sovellukseen ei tehdä tilauslomaketta, 18.10.2026.)
 
 Alkuperäinen kysymys ja perustelut säilytetään alla, koska ne dokumentoivat sen, mitä
 valittiin ja mitä ei.
@@ -53,7 +53,7 @@ katselinja lävistää tason samassa pisteessä riippumatta siitä, kuinka kauka
 CRA:ta käytetään vain vertailulukuun (B) ja se jää syötteeseen, koska P2:n
 prismalaskenta ja tulevat gaze-suuntien tarkennukset tarvitsevat sen.
 
-**Ratkaisu vaati** optikon kannan siihen, mitä lukua tilauslomakkeelle halutaan.
+**Ratkaisu vaati** optikon kannan siihen, mitä lukua linssitalolle tilataan.
 Kanta saatiin 1.9.2026: (A). Ks. tämän kohdan alku.
 
 ---

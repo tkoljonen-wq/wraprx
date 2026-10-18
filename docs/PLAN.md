@@ -184,7 +184,7 @@ Muutamia kymmeniä ehdokkaita, mikrosekunteja. Jos tulos poikkeaa naiivista pyö
 
 ### 3.7 Laskentajälki
 
-Ydin palauttaa `CalcResult`-olion, jossa on `trace`-kenttä: jokainen välivaihe nimettynä (τ, μ, k-kertoimet, matriisit ennen ja jälkeen, kiilakulma, juurenhaun iteraatiot). Sama jälki syöttää käyttöliittymän välitulospaneelin, tulostettavan tilauslomakkeen liitteen ja testien snapshotit. Yksi lähde, kolme käyttöä — ja MDR-mielessä jäljitettävyys ilman erillistä lokitusta.
+Ydin palauttaa `CalcResult`-olion, jossa on `trace`-kenttä: jokainen välivaihe nimettynä (τ, μ, k-kertoimet, matriisit ennen ja jälkeen, kiilakulma, juurenhaun iteraatiot). Sama jälki syöttää käyttöliittymän välitulospaneelin ja testien snapshotit. Yksi lähde, kaksi käyttöä — ja MDR-mielessä jäljitettävyys ilman erillistä lokitusta.
 
 ---
 
@@ -221,10 +221,10 @@ wraprx/
 │  ├─ ui/
 │  │  ├─ App.tsx
 │  │  ├─ components/             syöttökentät, tuloskortit, varoitukset
-│  │  ├─ views/                  laskuri, tilauslomake, presetit, tietoja
+│  │  ├─ views/                  laskuri, presetit, tietoja
 │  │  ├─ state/                  signals, URL-hash-serialisointi, localStorage
 │  │  ├─ flags.ts                ominaisuusliput (baseCurveModel: false)
-│  │  └─ i18n/                   fi.ts, en.ts
+│  │  └─ i18n/                   fi.ts (vain suomi)
 │  └─ main.tsx
 ├─ data/
 │  ├─ materials.json             n, Abbe, tiheys, kauppanimet, lähde per rivi
@@ -253,7 +253,7 @@ wraprx/
 
 Ilman tätä testiä flat-rakenteen ero monorepoon on pelkkä lupaus, ja ensimmäinen kiireinen commit rikkoo sen. Testi on lyhyt ja ajetaan CI:ssä.
 
-**Tilan säilytys.** `localStorage` presetteihin (kehykset, materiaalit, linssitaloprofiilit) ja viimeiseen laskentaan. URL-hash laskennan tilalle → laskennan voi lähettää linkkinä kollegalle tai linssitalolle ilman että data kulkee palvelimen kautta. **Poikkeus: vapaa viitekenttä (§2.2 kohta 9) ei serialisoidu URL-hashiin.** Jos joku ohjeista huolimatta kirjoittaa kenttään nimen, se ei saa päätyä jaettavaan linkkiin ja selainhistorioihin. Viite säilyy vain localStoragessa laitteella ja tulostuu tilauslomakkeelle.
+**Tilan säilytys.** `localStorage` presetteihin (kehykset, materiaalit, linssitaloprofiilit) ja viimeiseen laskentaan. URL-hash laskennan tilalle → laskennan voi lähettää linkkinä kollegalle tai linssitalolle ilman että data kulkee palvelimen kautta. **Poikkeus: vapaa viitekenttä (§2.2 kohta 9) ei serialisoidu URL-hashiin.** Jos joku ohjeista huolimatta kirjoittaa kenttään nimen, se ei saa päätyä jaettavaan linkkiin ja selainhistorioihin. Viite säilyy vain localStoragessa laitteella.
 
 **Käyttöliittymä.** Kaksi palstaa: vasemmalla syöttö, oikealla tulos, joka päivittyy elävästi. Tulos kolmena tasona:
 
@@ -263,7 +263,7 @@ Ilman tätä testiä flat-rakenteen ero monorepoon on pelkkä lupaus, ja ensimm�
 
 Käyttö tapahtuu liikkeessä, mahdollisesti tabletilla, mahdollisesti asiakas vieressä: isot kosketuskohteet, numeronäppäimistö numeerisille kentille, ei modaaleja, näppäimistöfokus näkyvissä.
 
-**Versionäkyvyys.** Build upottaa versionumeron ja git-SHA:n. Ne näkyvät käyttöliittymän alalaidassa ja tulostetussa tilauslomakkeessa. Laskurin tulos on jäljitettävissä tiettyyn koodiversioon.
+**Versionäkyvyys.** Build upottaa versionumeron ja git-SHA:n. Ne näkyvät käyttöliittymän alalaidassa tuloksen yhteydessä. Laskurin tulos on jäljitettävissä tiettyyn koodiversioon.
 
 ---
 
@@ -315,7 +315,7 @@ Kun saat myöhemmin kaksikymmentä paria tilausjärjestelmästä, ne pudotetaan 
 | **P0** | `src/optics/`: units, matrix, vertex, geometry, ocr, ocr-numeric, rounding, validate, format, trace. Testit + rajatesti + CI. `validate-lab-data.ts` rakenne. | Kaikki §5:n testit vihreinä, ei käyttöliittymää |
 | **P1** | `src/ui/`: yksiteho, molemmat silmät, kaksi tuloskorttia, residuaali, varoitukset | Voit tehdä yhden oikean tilauksen ohjelmalla |
 | **P2** | `prism.ts` täydellä Snell-mallilla, desentraatio, OC-korkeus, Prentice, TCA | Prismaresepti menee läpi ilman käsilaskuja |
-| **P3** | Presetit, tulostettava tilauslomake, PWA/offline, URL-jakaminen, i18n | Toimii liikkeessä ilman verkkoa |
+| **P3** | Presetit, PWA/offline, URL-jakaminen | Toimii liikkeessä ilman verkkoa |
 | **P4** | ISO-toleranssit oikeasta lähteestä, base curve -lippu, valmistajadatan validointi | Ohjelma osaa kertoa milloin se on väärä työkalu |
 
 P0 ja P1 ovat pieni urakka. P2:n juurenhaku on ainoa kohta, jossa voi mennä aikaa.
@@ -330,7 +330,7 @@ P0 ja P1 ovat pieni urakka. P2:n juurenhaku on ainoa kohta, jossa voi mennä aik
 - Onko työkalu laskuri ammattilaisen käyttöön vai osa laitteen määrittelyä? Rajanveto ratkaisee luokituksen.
 - Positiointi: laskenta-apuväline, ei diagnostiikkaa, ei automaattista päätöstä. Optikko vastaa tuloksesta.
 - Dokumentoi algoritmi, sen lähteet ja verifiointitulokset. `CalcTrace` + testiraportti + versionumero antavat tämän lähes ilmaiseksi.
-- Näkyvä versionumero ja muutosloki jokaisessa tulosteessa.
+- Näkyvä versionumero ja muutosloki tulosnäkymässä.
 
 Jos tämä leviää Silmäaseman muihin liikkeisiin, kysymys on ratkaistava ennen sitä.
 
@@ -348,7 +348,8 @@ Jos tämä leviää Silmäaseman muihin liikkeisiin, kysymys on ratkaistava enne
 | Monorepo vai flat? | **Ratkaistu:** flat, rajatesti valvoo eristystä |
 | Toleranssistandardi: 8980-1 vai 21987? | **Ratkaistu:** molemmat, eri kohteille — 8980-1 tilattavalle linssille, 21987 käytössä toteutuvalle |
 | Kenelle ohjelma on? | Avoin. Vain sinulle vai muille optikoille? Jälkimmäinen vaatii lukitut oletukset ja tiukemmat varoitukset |
-| Kaksikielisyys | Avoin. Suositus: i18n-rakenne P1:ssä, englanti P3:ssa |
+| Kaksikielisyys | **Ratkaistu 18.10.2026:** vain suomi |
+| Tulostettava tilauslomake | **Ratkaistu 18.10.2026:** ei tehdä, tulos riittää näytöllä |
 | Ytimen uudelleenkäyttö muissa työkaluissa | Avoin. `src/optics/` on irrotettavissa milloin vain, ei tarvitse päättää nyt |
 
 ---

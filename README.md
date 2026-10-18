@@ -8,8 +8,7 @@ Tavallinen laskuri kertoo, mitä käyttäjä saa. Tämä kertoo, mitä pitää t
 tarkistaa itsensä ajamalla tuloksen takaisin eteenpäin-mallin läpi.
 
 **Tila: vaiheet P0, P1 ja P2 valmiit** — laskentaydin, testit, käyttöliittymä ja
-prisman käännös. Seuraava on P3: presetit, tulostettava tilauslomake, PWA/offline ja
-URL-jakaminen.
+prisman käännös. Seuraava on P3: presetit, PWA/offline ja URL-jakaminen.
 
 - **Sovellus:** https://tkoljonen-wq.github.io/wraprx/
 - Suunnitelma: [docs/PLAN.md](docs/PLAN.md)

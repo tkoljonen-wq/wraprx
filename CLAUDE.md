@@ -30,7 +30,7 @@ tilata, jotta kallellaan oleva linssi tuottaa halutun korjauksen käyttäjän si
 | P0 | Laskentaydin, testit, rajatesti, CI, valmistajadatan ajopolku | **valmis** |
 | P1 | `src/ui/` (Preact): yksiteho, molemmat silmät, kaksi tuloskorttia | **valmis** |
 | P2 | `prism.ts` täydellä Snell-mallilla ja prismakäännöksellä | **valmis** |
-| P3 | Presetit, tilauslomake, PWA/offline, URL-jakaminen, i18n | seuraava |
+| P3 | Presetit, PWA/offline, URL-jakaminen | seuraava |
 | P4 | ISO-toleranssit lähteestä, base curve -lippu, valmistajadata | ei aloitettu |
 
 `prism.ts` sisältää nyt myös kiilamallin: exakti vektori-Snell kahdella pinnalla ja
@@ -82,14 +82,17 @@ Johto vahvisti myös etumerkkivalinnan `betaDeg < 0` OD:lle.
    jäävät vertailuluvuiksi. Ks. [docs/OPEN-QUESTIONS.md](docs/OPEN-QUESTIONS.md) kohta 1.
    Sama kohta sisältää yhä **tilauskäytännön kysymyksen**: tekeekö linssitalo
    panto-pudotuksen itse annetusta korkeudesta? Se on varmistettava linssitalolta ennen
-   ensimmäistä oikeaa tilausta ja se kuuluu P3:n tilauslomakkeen saatetekstiin.
-2. **P3 seuraavaksi:** presetit, tulostettava tilauslomake, PWA/offline, URL-jakaminen
-   ja i18n. Tilauslomakkeen saatetekstiin kuuluu kaksi linssitalolta varmistettavaa
-   asiaa: panto-pudotus (kohta 1) ja prisman mittausasento (kohta 11.1). URL-jaossa
-   pätee §4:n sääntö: vapaa viitekenttä EI serialisoidu linkkiin — siksi kenttää ei ole
-   vielä lisätty lainkaan. PWA:ssa noudatetaan käyttäjän globaalia ohjetta:
-   `manifest.json` (`start_url: "."`, standalone), SVG-ikonit 192/512/maskable ja
-   `sw.js` network first -strategialla, kaikki suhteellisin poluin.
+   ensimmäistä oikeaa tilausta. Sama koskee prisman mittausasentoa (kohta 11.1).
+2. **P3 seuraavaksi:** presetit, PWA/offline ja URL-jakaminen. **Rajattu pois
+   18.10.2026 käyttäjän päätöksellä:** tulostettava tilauslomake (tulos riittää
+   näytöllä) ja kieliversiot (vain suomi; `i18n/fi.ts` jää merkkijonotiedostoksi,
+   muita kieliä ei lisätä). URL-jaossa pätee §4:n sääntö: vapaa viitekenttä EI
+   serialisoidu linkkiin — siksi kenttää ei ole vielä lisätty lainkaan. PWA:ssa
+   noudatetaan käyttäjän globaalia ohjetta: `manifest.json` (`start_url: "."`,
+   standalone, oma `id`), **PNG-ikonit** `icons/icon-192.png`, `icon-512.png` ja
+   `icon-maskable.png` (Chromen Android-asennus ei toimi pelkillä SVG-ikoneilla; SVG
+   saa olla lisäksi faviconina), `sw.js` network first -strategialla sovelluskohtaisella
+   välimuistietuliitteellä, kaikki suhteellisin poluin.
 3. **Julkaistu 1.9.2026.** Julkinen repo `github.com/tkoljonen-wq/wraprx`, haara `main`.
    CI ja GitHub Pages ajavat joka pushilla; sovellus on osoitteessa
    `https://tkoljonen-wq.github.io/wraprx/`. `.gitattributes` pakottaa LF:n, jotta
