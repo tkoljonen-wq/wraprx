@@ -199,7 +199,7 @@ Ydin palauttaa `CalcResult`-olion, jossa on `trace`-kenttä: jokainen välivaihe
 | Testit | Vitest + fast-check | Yksikkö-, referenssi-, ominaisuus- ja rajatestit samassa ajossa |
 | Skriptit | tsx | `scripts/`-hakemiston ajo ilman erillistä buildia |
 | Julkaisu | GitHub Actions → Pages | Testit ja tyyppitarkistus porttina; punainen testi ei päädy tuotantoon |
-| Offline | vite-plugin-pwa | Toimii liikkeessä ilman verkkoa, asennettavissa tabletin kotinäytölle |
+| Offline | Oma network first -service worker (`pwa/sw.js`, build täydentää tiedostolistan) | Toimii liikkeessä ilman verkkoa, asennettavissa kotinäytölle. Toteutettu 18.10.2026 ilman vite-plugin-pwa:ta, koska jaetun originin välimuistisäännöt vaativat oman etuliitteen. |
 
 ```
 wraprx/

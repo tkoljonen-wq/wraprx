@@ -7,8 +7,9 @@ korjaus, kun linssi on kehyksessä kallellaan (wrap + pantoskooppinen kaltevuus)
 Tavallinen laskuri kertoo, mitä käyttäjä saa. Tämä kertoo, mitä pitää tilata — ja
 tarkistaa itsensä ajamalla tuloksen takaisin eteenpäin-mallin läpi.
 
-**Tila: vaiheet P0, P1 ja P2 valmiit** — laskentaydin, testit, käyttöliittymä ja
-prisman käännös. Seuraava on P3: presetit, PWA/offline ja URL-jakaminen.
+**Tila: vaiheet P0–P3 valmiit** — laskentaydin, testit, käyttöliittymä, prisman
+käännös, tallennetut kehykset ja linssitalot, jakolinkki sekä asennettava PWA, joka
+toimii ilman verkkoa. Viimeisin laskenta ja presetit säilyvät vain laitteella.
 
 - **Sovellus:** https://tkoljonen-wq.github.io/wraprx/
 - Suunnitelma: [docs/PLAN.md](docs/PLAN.md)
@@ -70,7 +71,7 @@ joten tulos on jäljitettävissä tiettyyn koodiversioon.
 
 ```bash
 npm install
-npm test            # 114 testiä: rajatesti, referenssi, ominaisuus, konsistenssi, jälki, prisma, lomake
+npm test            # 129 testiä: rajatesti, referenssi, ominaisuus, konsistenssi, jälki, prisma, lomake, jakolinkki, presetit
 npm run typecheck
 npm run demo        # tulostaa referenssitapauksen tuloksen ja laskentajäljen
 npm run validate:lab

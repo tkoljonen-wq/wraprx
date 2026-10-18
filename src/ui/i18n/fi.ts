@@ -1,8 +1,8 @@
 /**
  * Suomenkieliset merkkijonot (suunnitelma §4).
  *
- * Kaikki käyttöliittymän teksti on täällä, jotta P3:n `en.ts` on pelkkä käännös eikä
- * arkeologiaa. Optiikan omat selitetekstit (varoitukset, verdiktit, validointivirheet)
+ * Kaikki käyttöliittymän teksti on täällä. Sovellus on vain suomeksi (päätös
+ * 18.10.2026); tiedosto pitää tekstit yhdessä paikassa, ei valmistele käännöstä. Optiikan omat selitetekstit (varoitukset, verdiktit, validointivirheet)
  * tulevat `src/optics/format.ts`:stä — niitä ei monisteta tänne, koska ne ovat osa
  * laskennan sopimusta.
  */
@@ -13,7 +13,8 @@ export const fi = {
     tagline: 'Kompensoitu linssitilaus kallistetulle kehykselle · vain yksiteho',
     version: (version: string, sha: string): string => `versio ${version} (${sha})`,
     privacy:
-      'Kaikki laskenta tapahtuu selaimessa. Mitään ei lähetetä mihinkään eikä mitään tallenneta.',
+      'Kaikki laskenta tapahtuu selaimessa, eikä mitään lähetetä mihinkään. Viimeisin laskenta sekä tallennetut kehykset ja linssitalot säilyvät vain tällä laitteella.',
+    install: 'Asenna sovellus',
   },
 
   sections: {
@@ -88,6 +89,31 @@ export const fi = {
     copy: 'Kopioi tilausrivi',
     copied: 'Kopioitu',
     copyFailed: 'Kopiointi ei onnistunut',
+    share: 'Jaa linkkinä',
+    linkCopied: 'Linkki kopioitu leikepöydälle',
+    shareFailed: 'Kopioi linkki alla olevasta kentästä:',
+    shareTitle: 'WrapRx-laskenta',
+  },
+
+  shared: {
+    opened:
+      'Laskenta avattiin jaetusta linkistä. Tarkista luvut ennen tilausta — linkki sisältää vain numerot, ei asiakastietoja.',
+  },
+
+  presets: {
+    frameLabel: 'Tallennettu kehys',
+    labLabel: 'Tallennettu linssitalo',
+    none: '— valitse —',
+    save: 'Tallenna nykyinen',
+    saveConfirm: 'Tallenna',
+    cancel: 'Peru',
+    remove: 'Poista',
+    nameLabel: 'Nimi',
+    framePlaceholder: 'esim. urheilukehys, koko L',
+    labPlaceholder: 'esim. Linssitalo Oy',
+    frameHint:
+      'Tallentaa kulmat, kulmatavan ja kehysmitat. Sovituskorkeus on asiakkaan mitta, eikä sitä tallenneta. Presetin käyttö poistaa ruksin «kulmat mitattu», koska tallennetut kulmat ovat nimellisarvoja.',
+    labHint: 'Tallentaa linssitalon asetukset tälle laitteelle.',
   },
 
   results: {

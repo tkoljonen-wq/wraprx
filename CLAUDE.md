@@ -23,14 +23,14 @@ tilata, jotta kallellaan oleva linssi tuottaa halutun korjauksen käyttäjän si
    korkeintaan vertailulukuna välitulospaneelissa, eivät laskennan perustana.
    §3:n kaavat on johdettu ja tarkistettu — jos jokin näyttää väärältä, **kysy**.
 
-## Tila (päivitetty 1.9.2026)
+## Tila (päivitetty 18.10.2026)
 
 | Vaihe | Sisältö | Tila |
 |---|---|---|
 | P0 | Laskentaydin, testit, rajatesti, CI, valmistajadatan ajopolku | **valmis** |
 | P1 | `src/ui/` (Preact): yksiteho, molemmat silmät, kaksi tuloskorttia | **valmis** |
 | P2 | `prism.ts` täydellä Snell-mallilla ja prismakäännöksellä | **valmis** |
-| P3 | Presetit, PWA/offline, URL-jakaminen | seuraava |
+| P3 | Presetit, PWA/offline, URL-jakaminen | **valmis** (Android-asennus testaamatta) |
 | P4 | ISO-toleranssit lähteestä, base curve -lippu, valmistajadata | ei aloitettu |
 
 `prism.ts` sisältää nyt myös kiilamallin: exakti vektori-Snell kahdella pinnalla ja
@@ -39,9 +39,9 @@ tilattava on kiilan poikkeutus kallistamattomana** eli focimetrissä mitattava
 nimellisprisma (docs/OPEN-QUESTIONS.md kohta 11.1). Käännöksen saa kytkeä pois lipulla
 `prismModel: 'passThrough'`, jolloin `prismNotCompensated` varoittaa.
 
-### P0:n, P1:n ja P2:n valmistumistila
+### P0–P3:n valmistumistila
 
-`npm run typecheck`, `npm test` (114 testiä, 8 tiedostoa) ja `npm run build` menevät läpi.
+`npm run typecheck`, `npm test` (129 testiä, 10 tiedostoa) ja `npm run build` menevät läpi.
 Kaikki §9.3:n P0-kriteerit on katettu testillä. Rajatesti on koeteltu tarkoituksellisella
 rikkomuksella (`window` + ulkopuolinen import ytimeen) ja se kaatui kuten pitää.
 
@@ -78,16 +78,28 @@ Johto vahvisti myös etumerkkivalinnan `betaDeg < 0` OD:lle.
    Sama kohta sisältää yhä **tilauskäytännön kysymyksen**: tekeekö linssitalo
    panto-pudotuksen itse annetusta korkeudesta? Se on varmistettava linssitalolta ennen
    ensimmäistä oikeaa tilausta. Sama koskee prisman mittausasentoa (kohta 11.1).
-2. **P3 seuraavaksi:** presetit, PWA/offline ja URL-jakaminen. **Rajattu pois
-   18.10.2026 käyttäjän päätöksellä:** tulostettava tilauslomake (tulos riittää
-   näytöllä) ja kieliversiot (vain suomi; `i18n/fi.ts` jää merkkijonotiedostoksi,
-   muita kieliä ei lisätä). URL-jaossa pätee §4:n sääntö: vapaa viitekenttä EI
-   serialisoidu linkkiin — siksi kenttää ei ole vielä lisätty lainkaan. PWA:ssa
-   noudatetaan käyttäjän globaalia ohjetta: `manifest.json` (`start_url: "."`,
-   standalone, oma `id`), **PNG-ikonit** `icons/icon-192.png`, `icon-512.png` ja
-   `icon-maskable.png` (Chromen Android-asennus ei toimi pelkillä SVG-ikoneilla; SVG
-   saa olla lisäksi faviconina), `sw.js` network first -strategialla sovelluskohtaisella
-   välimuistietuliitteellä, kaikki suhteellisin poluin.
+2. **P3 valmis 18.10.2026.** **Rajattu pois käyttäjän päätöksellä:** tulostettava
+   tilauslomake (tulos riittää näytöllä) ja kieliversiot (vain suomi; `i18n/fi.ts` on
+   pelkkä merkkijonotiedosto). Toteutus:
+   - **Jakolinkki** (`state/share.ts`, puhdas): lomake URL-hashiin sallittujen avainten
+     listalla. Vapaa viitekenttä EI saa koskaan tulla listaan (§4) — `test/share.test.ts`
+     valvoo. Hash luetaan käynnistyksessä ja poistetaan osoiteriviltä. Android käyttää
+     `navigator.share`:a, muualla leikepöytä tai näkyvä linkkikenttä.
+   - **Presetit** (`state/presets.ts`, puhdas): kehykset (kulmat, kulmatapa, kehysmitat;
+     EI sovituskorkeutta) ja linssitaloprofiilit. Kehyspresetin käyttö poistaa ruksin
+     «kulmat mitattu». Materiaaleja ei presetoida: ne tulevat lähteistetystä datasta.
+   - **localStorage** (`state/store.ts`): avaimet `wraprx-form` ja `wraprx-presets`.
+     Origin on jaettu muiden GitHub Pages -sovellusten kanssa: älä koskaan tyhjennä
+     koko localStoragea.
+   - **PWA** käyttäjän globaalin ohjeen mukaan: `public/manifest.json` (`id: "wraprx"`,
+     `start_url: "."`), PNG-ikonit `public/icons/` (+ SVG-favicon), head-skripti ottaa
+     `beforeinstallprompt`:n talteen ja Asenna-painike (`state/install.ts`). Service
+     worker on `pwa/sw.js`-pohja, jonka `vite.config.ts`:n lisäosa täydentää buildin
+     tiedostolistalla ja build-tunnisteella (ei vite-plugin-pwa:ta). Network first,
+     välimuistietuliite `wraprx-`, activate poistaa vain omat vanhat välimuistit.
+     Devissä SW:tä ei rekisteröidä; tuotantobuildia voi kokeilla `wraprx-preview`-
+     konfiguraatiolla (`.claude/launch.json`).
+   - **Tarkistamatta:** asennus oikealla Android-puhelimella ja offline-käyttö siellä.
 3. **Julkaistu 1.9.2026.** Julkinen repo `github.com/tkoljonen-wq/wraprx`, haara `main`.
    CI ja GitHub Pages ajavat joka pushilla; sovellus on osoitteessa
    `https://tkoljonen-wq.github.io/wraprx/`. `.gitattributes` pakottaa LF:n, jotta
@@ -101,8 +113,11 @@ Johto vahvisti myös etumerkkivalinnan `betaDeg < 0` OD:lle.
 ```
 src/optics/   ydin, puhdas TS (units, matrix, vertex, geometry, ocr, ocr-numeric,
               prism, rounding, tolerance, validate, format, trace, index)
-src/ui/       App.tsx, components/, views/, state/ (model.ts puhdas, store.ts signals),
-              flags.ts, i18n/fi.ts, styles.css
+src/ui/       App.tsx, components/, views/, state/ (model.ts, share.ts ja presets.ts
+              puhtaita; store.ts signals + localStorage; install.ts), flags.ts,
+              i18n/fi.ts, styles.css
+public/       manifest.json, icons/ (PNG 192/512/maskable + SVG)
+pwa/          sw.js-pohja (build täydentää)
 src/main.tsx  käynnistys
 data/         materials.json (lähde per rivi), tolerances.json (tyhjä)
 test/         boundary, reference, property, consistency, trace, prism, ui-model + cases/

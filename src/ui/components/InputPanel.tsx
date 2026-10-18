@@ -10,14 +10,23 @@ import { EYE_KEYS, type EyeKey } from '../state/model.js';
 import { MATERIALS, MISSING_MATERIALS, findMaterial } from '../state/materials.js';
 import {
   clearForm,
+  deleteFramePreset,
+  deleteLabPreset,
   form,
   loadExample,
+  presets,
+  saveFramePreset,
+  saveLabPreset,
   setEyeField,
   setField,
   setFrameField,
   setLabField,
+  useFramePreset,
+  useLabPreset,
 } from '../state/store.js';
 import { CheckField, NumberField, SegmentedField, SelectField } from './fields.js';
+import { PresetBar } from './PresetBar.js';
+import { ShareButton } from './ShareButton.js';
 
 function EyeFields({ eye }: { readonly eye: EyeKey }) {
   const values = form.value.eyes[eye];
@@ -83,6 +92,7 @@ export function InputPanel() {
         <button type="button" class="button button-quiet" onClick={clearForm}>
           {fi.actions.clear}
         </button>
+        <ShareButton />
       </div>
 
       <section class="panel">
@@ -95,6 +105,15 @@ export function InputPanel() {
 
       <section class="panel">
         <h2>{fi.sections.frame}</h2>
+        <PresetBar
+          label={fi.presets.frameLabel}
+          names={presets.value.frames.map((entry) => entry.name)}
+          placeholder={fi.presets.framePlaceholder}
+          hint={fi.presets.frameHint}
+          onUse={useFramePreset}
+          onSave={saveFramePreset}
+          onDelete={deleteFramePreset}
+        />
         <div class="grid-2">
           <NumberField
             label={fi.fields.panto}
@@ -192,6 +211,15 @@ export function InputPanel() {
 
       <section class="panel">
         <h2>{fi.sections.lab}</h2>
+        <PresetBar
+          label={fi.presets.labLabel}
+          names={presets.value.labs.map((entry) => entry.name)}
+          placeholder={fi.presets.labPlaceholder}
+          hint={fi.presets.labHint}
+          onUse={useLabPreset}
+          onSave={saveLabPreset}
+          onDelete={deleteLabPreset}
+        />
         <SegmentedField
           label={fi.fields.cylFormOutput}
           value={state.lab.cylForm}

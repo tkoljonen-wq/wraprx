@@ -222,7 +222,60 @@ summary:focus-visible {
 
 .actions {
   display: flex;
+  flex-wrap: wrap;
+  align-items: center;
   gap: 8px;
+}
+
+.share-url {
+  flex: 1 1 100%;
+  font-size: 13px;
+}
+
+.action-status {
+  font-size: 14px;
+  color: var(--ok);
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* Presetit: rivi osion alussa. */
+.preset {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 14px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+}
+
+.preset-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.preset-name {
+  flex: 1 1 180px;
+  min-width: 0;
+}
+
+.notice {
+  margin: 0 0 12px;
+  padding: 10px 12px;
+  font-size: 14px;
+  color: var(--text);
+  background: var(--panel-2);
+  border: 1px solid var(--warn);
+  border-radius: 8px;
+}
+
+.install {
+  min-height: 44px;
+  margin-bottom: 12px;
 }
 
 .button {
@@ -243,7 +296,7 @@ summary:focus-visible {
 }
 
 .button-small {
-  min-height: 36px;
+  min-height: 44px;
   padding: 4px 10px;
   font-size: 13px;
 }
