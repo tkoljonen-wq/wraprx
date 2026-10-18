@@ -31,92 +31,70 @@ tilata, jotta kallellaan oleva linssi tuottaa halutun korjauksen käyttäjän si
 | P1 | `src/ui/` (Preact): yksiteho, molemmat silmät, kaksi tuloskorttia | **valmis** |
 | P2 | `prism.ts` täydellä Snell-mallilla ja prismakäännöksellä | **valmis** |
 | P3 | Presetit, PWA/offline, URL-jakaminen | **valmis** (Android-asennus testaamatta) |
-| P4 | ISO-toleranssit lähteestä, base curve -lippu, valmistajadata | ei aloitettu |
+| P4 | ISO-toleranssit, base curve, valmistajadata | **odottaa lähdeaineistoa, jota ei ole saatavilla** |
 
-`prism.ts` sisältää nyt myös kiilamallin: exakti vektori-Snell kahdella pinnalla ja
-poikkeutuksen käännös vaimennetulla Newtonilla. **Reseptin prisma on tavoite silmällä;
-tilattava on kiilan poikkeutus kallistamattomana** eli focimetrissä mitattava
-nimellisprisma (docs/OPEN-QUESTIONS.md kohta 11.1). Käännöksen saa kytkeä pois lipulla
-`prismModel: 'passThrough'`, jolloin `prismNotCompensated` varoittaa.
+`npm run typecheck`, `npm test` (133 testiä, 11 tiedostoa) ja `npm run build` menevät
+läpi. Sovellus on verkossa osoitteessa `https://tkoljonen-wq.github.io/wraprx/`
+(julkinen repo `github.com/tkoljonen-wq/wraprx`, haara `main`; CI ja Pages ajavat joka
+pushilla). `.gitattributes` pakottaa LF:n.
 
-### P0–P3:n valmistumistila
+### Laskennan varmennus
 
-`npm run typecheck`, `npm test` (133 testiä, 11 tiedostoa) ja `npm run build` menevät läpi.
-Kaikki §9.3:n P0-kriteerit on katettu testillä. Rajatesti on koeteltu tarkoituksellisella
-rikkomuksella (`window` + ulkopuolinen import ytimeen) ja se kaatui kuten pitää.
+- **Referenssitapaus 1** (§5.3) on johdettu käsin koodista riippumatta
+  ([test/cases/derivations.md](test/cases/derivations.md)): **OD −0,9034 +0,4825 ax
+  171,04 ja OS −1,5035 +1,7248 ax 169,40**. OD:n wrap on negatiivinen (`betaDeg < 0`).
+- **Linssin kanta (korjattu 18.10.2026):** tilauksen akseli luetaan linssin omasta
+  180-linjasta ê_h. Yhdistetyssä kallistuksessa tangentiaalimeridiaanilla on eri kulma
+  linssin tasossa (μ_L) kuin silmän frontaalitasossa (μ); 18°/15°:lla ero on 2,39°.
+  `inverseTilt`/`forwardTilt` saavat molemmat (`geometry.muDeg`, `geometry.muLensDeg`).
+  Johto: derivations.md tapaus 10.
+- **Säteenjuoksu** (`test/raytrace.test.ts`, `test/support/raytrace.ts`): riippumaton
+  3D-tarkistus Snellin lailla ilman OCR-kertoimia. Kaatuu, jos kanta käsitellään väärin.
+  Se jakaa kehysgeometrian koodin kanssa, joten kiertojärjestys kasvoilla (ensin wrap,
+  sitten koko kehyksen panto) on yhä oletus (OPEN-QUESTIONS kohta 5).
+- **Prisma:** kiilamalli + exakti vektori-Snell + vaimennettu Newton, tarkistettu käsin
+  johdettua skalaarikaavaa vasten (tapaukset 8 ja 9; määrittelyalue kiilakulma < 90°).
+  Reseptin prisma on tavoite silmällä, tilattava on kiilan poikkeutus kallistamattomana
+  (focimetri). Nollatavoite = nollaprisma (päätös 18.10.2026, OPEN-QUESTIONS 11.2).
+- **OptiCampus-vertailu** (18.10.2026, OPEN-QUESTIONS kohta 9): yksittäinen kallistus
+  täsmää ±0,01 D. Yhdistetyssä kallistuksessa OptiCampus poikkeaa 1–6° akselissa, ja
+  säteenjuoksun mukaan sen tilaus jättää silmälle jopa 0,3 D:n virheen.
 
-P1: käyttöliittymä on Preact + signals, yksi näkymä, elävä laskenta ilman
-laskentanappia. `test/ui-model.test.ts` ajaa referenssitapauksen **lomakkeen kautta**
-(merkkijonot → `buildSolveInput` → `solve`) samoja käsin johdettuja odotusarvoja vasten,
-joten desimaalipilkku, miinusmuodon transpositio ja kenttien kytkentä ovat testattuja
-ilman DOM:ia. Ulkoasu on tarkistettu 375 px:n leveydellä: ei vaakavieritystä,
-kosketuskohteet ≥ 44 px.
+### Käyttäjän päätökset
 
-P2: prisman käännös on kiilamalli + exakti vektori-Snell + vaimennettu Newton.
-Kiilan poikkeutus on tarkistettu **käsin johdettua skalaarista prismakaavaa** vasten
-kahdessa geometriassa (derivations.md tapaukset 8 ja 9); ero on alle 4e-5 pd. Molemmat
-johdot ovat eri muotoilu kuin koodin vektori-Snell, joten yhtäpitävyys on todellinen
-tarkistus. Kallistettu tapaus 9 paljasti kaksi asiaa: käsinlaskun etumerkkivirheen
-(kirjattu johtoon) ja aidon robustisuusvian, jossa juurenhaku vaelsi 253°:n kiilaan —
-siitä syntyi mallin määrittelyalue (kiilakulma < 90°).
-
-Referenssitapaus §5.3 on johdettu käsin koodista riippumatta
-([test/cases/derivations.md](test/cases/derivations.md)) ja johto vahvisti suunnitelman
-ehdolliset luvut: OD −0,9034 +0,4825 ax 168,65 ja OS −1,5035 +1,7248 ax 171,79.
-Johto vahvisti myös etumerkkivalinnan `betaDeg < 0` OD:lle.
-
-**Korjattu 18.10.2026: linssin kanta.** Tilauksen akseli luetaan linssin omasta
-180-linjasta ê_h, ja yhdistetyssä kallistuksessa sen tangentiaalimeridiaani μ_L eroaa
-silmän frontaalitason μ:stä (18°/15°: 2,39°). `inverseTilt`/`forwardTilt` saavat
-nyt molemmat kulmat (`geometry.muDeg`, `geometry.muLensDeg`). Referenssitapaus 1 on
-johdettu uudelleen: **OD −0,9034 +0,4825 ax 171,04 ja OS −1,5035 +1,7248 ax 169,40**.
-Riippumaton tarkistus on `test/raytrace.test.ts`: 3D-säteenjuoksu Snellin lailla ilman
-OCR-kertoimia (`test/support/raytrace.ts`). Se kaatuu, jos kanta käsitellään väärin.
-OptiCampuksen laskuri poikkeaa tästä 1–6° yhdistetyssä kallistuksessa; säteenjuoksun
-mukaan sen tilaus jättää silmälle jopa 0,3 D:n virheen (docs/OPEN-QUESTIONS.md kohta 9).
+- OC-korkeus: (A) katselinjan lävistyspiste (1.9.2026). (B) ja nyrkkisääntö ovat
+  vertailulukuja.
+- Ei tulostettavaa tilauslomaketta (tulos luetaan näytöltä) eikä kieliversioita (vain
+  suomi; `i18n/fi.ts` on pelkkä merkkijonotiedosto). 18.10.2026.
+- Desentraation Prentice-prismaa ei kompensoida. 18.10.2026.
+- P4:n lähdeaineistoa (ISO-taulukot, linssitalon kompensoidut tilaukset, base curve
+  -taulukot) ei ole saatavilla. `data/tolerances.json` pysyy tyhjänä, verdikti
+  `'notAssessed'`. Älä täytä arvaamalla. 18.10.2026.
 
 ## Mistä jatketaan
 
-0. **§3.5:n nollaprismalause on ratkaistu 18.10.2026:** nollatavoite = nollaprisma.
-   Kallistus ei indusoi prismaa OC:n kohdalla (kriteeri A), joten mitään ei kumota.
-   Käyttäjä hylkäsi desentraation Prentice-prisman kompensoinnin tarpeettomana.
-   Mallia ei muuteta. Ks. [docs/OPEN-QUESTIONS.md](docs/OPEN-QUESTIONS.md) kohta 11.2.
+1. **Android-testi:** asennus Chromella, offline (lentotila) ja Jaa linkkinä -valikko
+   oikealla puhelimella. Ei vielä tehty.
+2. **Linssitalolta varmistettavat ennen ensimmäistä oikeaa tilausta** (ei laskentaa):
+   tekeekö talo panto-pudotuksen itse annetusta korkeudesta (OPEN-QUESTIONS kohta 1) ja
+   missä asennossa prisma mitataan (kohta 11.1).
+3. Muut jatkot syntyvät käytöstä. P4 jatkuu vain, jos lähdeaineistoa tulee.
 
-1. **OC-korkeuden kriteeri on päätetty 1.9.2026:** (A) katselinjan lävistyspiste.
-   Käyttäjä vahvisti kannan. `decentration`-funktiota ei muuteta; (B) ja nyrkkisääntö
-   jäävät vertailuluvuiksi. Ks. [docs/OPEN-QUESTIONS.md](docs/OPEN-QUESTIONS.md) kohta 1.
-   Sama kohta sisältää yhä **tilauskäytännön kysymyksen**: tekeekö linssitalo
-   panto-pudotuksen itse annetusta korkeudesta? Se on varmistettava linssitalolta ennen
-   ensimmäistä oikeaa tilausta. Sama koskee prisman mittausasentoa (kohta 11.1).
-2. **P3 valmis 18.10.2026.** **Rajattu pois käyttäjän päätöksellä:** tulostettava
-   tilauslomake (tulos riittää näytöllä) ja kieliversiot (vain suomi; `i18n/fi.ts` on
-   pelkkä merkkijonotiedosto). Toteutus:
-   - **Jakolinkki** (`state/share.ts`, puhdas): lomake URL-hashiin sallittujen avainten
-     listalla. Vapaa viitekenttä EI saa koskaan tulla listaan (§4) — `test/share.test.ts`
-     valvoo. Hash luetaan käynnistyksessä ja poistetaan osoiteriviltä. Android käyttää
-     `navigator.share`:a, muualla leikepöytä tai näkyvä linkkikenttä.
-   - **Presetit** (`state/presets.ts`, puhdas): kehykset (kulmat, kulmatapa, kehysmitat;
-     EI sovituskorkeutta) ja linssitaloprofiilit. Kehyspresetin käyttö poistaa ruksin
-     «kulmat mitattu». Materiaaleja ei presetoida: ne tulevat lähteistetystä datasta.
-   - **localStorage** (`state/store.ts`): avaimet `wraprx-form` ja `wraprx-presets`.
-     Origin on jaettu muiden GitHub Pages -sovellusten kanssa: älä koskaan tyhjennä
-     koko localStoragea.
-   - **PWA** käyttäjän globaalin ohjeen mukaan: `public/manifest.json` (`id: "wraprx"`,
-     `start_url: "."`), PNG-ikonit `public/icons/` (+ SVG-favicon), head-skripti ottaa
-     `beforeinstallprompt`:n talteen ja Asenna-painike (`state/install.ts`). Service
-     worker on `pwa/sw.js`-pohja, jonka `vite.config.ts`:n lisäosa täydentää buildin
-     tiedostolistalla ja build-tunnisteella (ei vite-plugin-pwa:ta). Network first,
-     välimuistietuliite `wraprx-`, activate poistaa vain omat vanhat välimuistit.
-     Devissä SW:tä ei rekisteröidä; tuotantobuildia voi kokeilla `wraprx-preview`-
-     konfiguraatiolla (`.claude/launch.json`).
-   - **Tarkistamatta:** asennus oikealla Android-puhelimella ja offline-käyttö siellä.
-3. **Julkaistu 1.9.2026.** Julkinen repo `github.com/tkoljonen-wq/wraprx`, haara `main`.
-   CI ja GitHub Pages ajavat joka pushilla; sovellus on osoitteessa
-   `https://tkoljonen-wq.github.io/wraprx/`. `.gitattributes` pakottaa LF:n, jotta
-   Ubuntu-CI ja Windows-työasema eivät tuota eroavia diffejä.
-4. **Ei kiireellistä velkaa.** Suunnitelma on repossa kahdesti: alkuperäinen
-   `wrap-rx-suunnitelma-v0.5.md` juuressa ja kopio `docs/PLAN.md`. Juuren kopio voi
-   poistua, kun se ei enää tunnu tarpeelliselta.
+### P3:n toteutus lyhyesti
+
+- **Jakolinkki** (`state/share.ts`, puhdas): lomake URL-hashiin sallittujen avainten
+  listalla. Vapaa viitekenttä EI saa koskaan tulla listaan (§4) — `test/share.test.ts`
+  valvoo. Hash luetaan käynnistyksessä ja poistetaan osoiteriviltä.
+- **Presetit** (`state/presets.ts`, puhdas): kehykset (ilman sovituskorkeutta) ja
+  linssitaloprofiilit. Kehyspresetin käyttö poistaa ruksin «kulmat mitattu».
+  Materiaaleja ei presetoida.
+- **localStorage**: avaimet `wraprx-form` ja `wraprx-presets`. Origin on jaettu muiden
+  GitHub Pages -sovellusten kanssa: älä koskaan tyhjennä koko localStoragea.
+- **PWA**: `public/manifest.json` (`id: "wraprx"`, `start_url: "."`), PNG-ikonit,
+  Asenna-painike (`state/install.ts`). Service worker on `pwa/sw.js`-pohja, jonka
+  `vite.config.ts` täydentää buildin tiedostolistalla. Network first, välimuistietuliite
+  `wraprx-`. Devissä SW:tä ei rekisteröidä; tuotantobuildia voi kokeilla
+  `wraprx-preview`-konfiguraatiolla (`.claude/launch.json`).
 
 ## Rakenne
 
@@ -130,9 +108,10 @@ public/       manifest.json, icons/ (PNG 192/512/maskable + SVG)
 pwa/          sw.js-pohja (build täydentää)
 src/main.tsx  käynnistys
 data/         materials.json (lähde per rivi), tolerances.json (tyhjä)
-test/         boundary, reference, property, consistency, trace, prism, ui-model + cases/
+test/         boundary, reference, property, consistency, trace, prism, ui-model, share,
+              presets, raytrace + cases/ ja support/raytrace.ts (vain testeihin)
 scripts/      demo.ts, validate-lab-data.ts
-docs/         PLAN.md, OPEN-QUESTIONS.md
+docs/         PLAN.md (suunnitelma, alkuperäinen v0.5 + päivitykset), OPEN-QUESTIONS.md
 ```
 
 `src/ui/state/model.ts` on tarkoituksella puhdas (ei signaaleja, ei DOM:ia): lomakkeen
