@@ -84,6 +84,14 @@ linssitasolle ja silmälle) kuuluu samaan luokkaan kuin base curve -malli: se on
 kysymys, ja sen kokoluokka on syytä mitata valmistajadataa vasten ennen kuin sitä
 muutetaan.
 
+**Havainto 18.10.2026 (kohta 9):** OptiCampus poikkeaa WrapRx:stä juuri tässä
+tilanteessa, eli yhdistetyssä panto + wrap -kallistuksessa reseptin sylinterin ollessa
+vino. Kun reseptin akselia kokeiltiin kiertää koko kiertokulman `atan(tan β · sin θ)`
+verran, tulos meni OptiCampuksen ohi vastakkaiselle puolelle. OptiCampuksen akseli on
+suunnilleen puolivälissä, eli kumpikaan yksinkertainen tulkinta ei selitä sitä. Kumpi on
+oikein, ei selviä vertailusta: OptiCampus on likiarvo, ja WrapRx:n rajaus on tietoinen.
+Oikea korjaus vaatii linssitason kannan johdon käsin ennen kuin koodia muutetaan.
+
 ---
 
 ## 4. Base curve -korjauksen vertailupiste
@@ -140,13 +148,39 @@ hiljainen ja tuhoisa virhe (§9.1 kohta 3).
 
 ---
 
-## 9. Ulkoinen ristiintarkistus
+## 9. Ulkoinen ristiintarkistus — TEHTY 18.10.2026
 
-Suunnitelman §5.3 mainitsema ristiintarkistus OptiCampuksen Lens Tilt & Wrap -laskuria
-vastaan **Martin-tilassa** on tekemättä. Se on ainoa käytettävissä oleva riippumaton
-ulkoinen lähde, ja se kelpaa vain approksimaatiohaaran validointiin.
-`test/cases/derivations.md` tapaus 4 on valmis vertailukohta (−4,00 sph, panto 20°:
-Martin −3,858 +0,437 ax 180).
+Vertailu OptiCampuksen laskuria vastaan (https://opticampus.opti.vision/tools/tilt.php),
+24 tapausta. OptiCampus ilmoittaa kulmat linssin kallistuksena katselinjaan nähden eikä
+korjaa pintaväliä; WrapRx ajettiin samoin (pintaväli 12/12, wrap per linssi, kulmat
+mitattu). OptiCampus antaa tuloksen 0,01 D:n ja 1°:n tarkkuudella ja kutsuu sitä
+likiarvoksi.
+
+**Yhtäpitävää:**
+- Pelkkä panto tai pelkkä wrap, myös vino sylinteri: sfääri ja sylinteri ±0,01 D,
+  akseli sama asteen tarkkuudella. Esim. −1,00 −2,00 × 45, wrap 15° → molemmat
+  −0,94 −1,89 × 43.
+- Yhdistetty panto + wrap ilman sylinteriä: indusoidun sylinterin akseli sama
+  (18/15 → 49 vs 49,1; 15/18 → 39 vs 38,5; 20/20 → 43 vs 43,2). Kallistusten
+  yhdistäminen (kiertojärjestys, τ ja μ) on siis sama malli.
+- Oikea ja vasen silmä peilautuvat samoin, eli wrapin etumerkki on yhteneväinen.
+- Johto `derivations.md` tapaus 4 (−4,00, panto 20°, n 1,586): OptiCampus −3,41 −0,45 × 90,
+  WrapRx exakti −3,40 −0,45 × 90, Martin −3,42 −0,44 × 90.
+
+**Eroavaa:**
+1. **Suuri kallistus ja vahva linssi:** ero 0,03–0,07 D. Esim. −8,00, wrap 30°:
+   OptiCampus −5,56 −1,85, WrapRx exakti −5,50 −1,83, Martin −5,67 −1,75.
+   OptiCampuksen tulos on exaktin ja Martinin välissä, mikä sopii sen omaan
+   ilmoitukseen likiarvosta. WrapRx:n exakti haara on tarkistettu käsinjohdolla ja
+   riippumattomalla numeerisella toteutuksella, joten tämä ero ei ole merkki virheestä.
+2. **Yhdistetty panto + wrap ja vino sylinteri:** akseliero 1,7–3,1°. Esim. 18°/15°:
+   −3,00 −2,00 × 120 → OptiCampus × 109, WrapRx × 112,1; −1,00 −3,00 × 90 →
+   × 84 vs × 86,1. Ero kasvaa sylinterin mukana: 3 D:n sylinterillä 2° vastaa noin
+   0,2 D:n jäännössylinteriä. Tämä on kohdan 3 mallirajaus (linssitason kannan kierto),
+   ks. sieltä.
+
+Johtopäätös: perusmalli (kertoimet, kallistusten yhdistäminen, etumerkit) on sama.
+Ainoa kliinisesti merkittävä ero on kohdan 3 kysymys.
 
 Valmistajan kompensoitua dataa ei ole. `npm run validate:lab` on valmis ottamaan sen
 vastaan, ja se raportoi suoraan, tulkitseeko valmistaja wrapin per linssi vai
