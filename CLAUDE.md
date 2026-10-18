@@ -72,8 +72,8 @@ nyt molemmat kulmat (`geometry.muDeg`, `geometry.muLensDeg`). Referenssitapaus 1
 johdettu uudelleen: **OD −0,9034 +0,4825 ax 171,04 ja OS −1,5035 +1,7248 ax 169,40**.
 Riippumaton tarkistus on `test/raytrace.test.ts`: 3D-säteenjuoksu Snellin lailla ilman
 OCR-kertoimia (`test/support/raytrace.ts`). Se kaatuu, jos kanta käsitellään väärin.
-OptiCampuksen laskuri poikkeaa tästä 2–5° yhdistetyssä kallistuksessa; säteenjuoksun
-mukaan sen tilaus jättää silmälle 0,1–0,3 D virheen (docs/OPEN-QUESTIONS.md kohta 9).
+OptiCampuksen laskuri poikkeaa tästä 1–6° yhdistetyssä kallistuksessa; säteenjuoksun
+mukaan sen tilaus jättää silmälle jopa 0,3 D:n virheen (docs/OPEN-QUESTIONS.md kohta 9).
 
 ## Mistä jatketaan
 
